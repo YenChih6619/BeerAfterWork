@@ -1,0 +1,116 @@
+﻿@page "/Wms_Stock"
+@attribute [TabItemOption(Text = "庫存清點", Closable = true)]
+
+<Row ItemsPerRow="ItemsPerRow.One">
+
+    <Row ColSpan="1">
+        <GroupBox Title="庫存查詢" style="border-color:black;">
+
+            <Row ItemsPerRow="ItemsPerRow.Two">
+                <Select TValue="string"
+                        DisplayText="廠商"
+                        Color="Color.Dark"
+                        @bind-Value="init.Manufacturer_ID"
+                        Items="Model.Data._Manufacturer.Select(x=>{return new SelectedItem(x.Manufacturer_ID,x.Manufacturer_Name);})"
+                        ShowLabel="true" />
+
+                <BootstrapInput TValue="string"
+                                DisplayText="產品名稱"
+                                ShowLabel="true"
+                                @bind-Value="init.Lot_Name"
+                                Color="Color.Dark" />
+
+                <BootstrapInput TValue="string"
+                                DisplayText="產品條碼"
+                                ShowLabel="true"
+                                @bind-Value="init.Lot_Code"
+                                Color="Color.Dark" />
+
+                <Row ColSpan="2">
+                    <Button IsOutline="true"
+                            IsBlock="true"
+                            Color="Color.Success"
+                            Size="Size.Large"
+                            Text="查詢"
+                            OnClickWithoutRender="@(()=>{ StateHasChanged(); return Task.CompletedTask; })" />
+                </Row>
+
+            </Row>
+        </GroupBox>
+    </Row>
+
+    <GroupBox Title="入庫計數" style="border-color:black;">
+        <BootstrapInput TValue="string"
+                        DisplayText="入庫存"
+                        @ref="lotCodeRef"
+                        Color="Color.Primary"
+                        OnEnterAsync="(string obj)=>{ onAdd(obj); StateHasChanged(); return Task.CompletedTask;}" />
+    </GroupBox>
+
+    <Table TItem="Model.Universal.Wms_Stock.outParams"
+           HeaderStyle="TableHeaderStyle.Dark"
+           Items="outParams"
+           IsTracking="true"
+           IsBordered="true"
+           ShowExtendButtons="true"
+           ConfirmDeleteButtonText="刪除"
+           ConfirmDeleteContentText="確認要刪除選中的所有行嗎？"
+           EditButtonText="編輯"
+           EditDialogSaveButtonText="存檔"
+           EditDialogCloseButtonText="關閉"
+           EditModalTitle="編輯庫存"
+           EmptyText="庫存為空"
+           ShowAddButton="true"
+           ShowToastAfterSaveOrDeleteModel="false"
+           EditDialogCloseAsync="onClose"
+           OnDeleteAsync="OnDeleteAsync"
+           PageItems="10"
+           IsStriped="true">
+        <TableColumns>
+            <TableColumn @bind-Field="@context.Manufacturer_ID" Text="製造商 ID" />
+            <TableColumn @bind-Field="@context.Lot_Code" Text="標籤編號">
+                <Template Context="v">
+                    <BarCodeGenerator Value="@v.Row.Lot_Code" />
+                </Template>
+            </TableColumn>
+            <TableColumn @bind-Field="@context.Lot_Name" Text="產品名稱" />
+            <TableColumn @bind-Field="@context.QTY_NORMAL" Text="庫存數量" Align="Alignment.Center" style="font-weight:bold;" />
+            <TableColumn @bind-Field="@context.QTY_Price" Text="單位價格" Align="Alignment.Center" style="font-weight:bold; color: #008B00; " />
+            <TableColumn @bind-Field="@context.QTY_Cost" Text="單位成本" Align="Alignment.Center" style="font-weight:bold; color:#CD2626; " />
+            <TableColumn @bind-Field="@context.UNIT_ID" Text="單位 ID" />
+        </TableColumns>
+        <EditTemplate>
+            <Row ItemsPerRow="ItemsPerRow.Two">
+                <Select DisplayText="廠商"
+                        Color="Color.Dark"
+                        @bind-Value="context.Manufacturer_ID"
+                        Items="@Model.Data._Manufacturer.Select(x=>{ return new SelectedItem(x.Manufacturer_ID,x.Manufacturer_Name); })" />
+
+                <Row ColSpan="2">
+                    <BootstrapInput TValue="string" Color="Color.Dark" DisplayText="標籤編號" ShowLabel="true" @bind-Value="context.Lot_Code" />
+                    <BarCodeGenerator Value="@context.Lot_Code" />
+                </Row>
+
+                <BootstrapInput TValue="string" DisplayText="產品名稱" Color="Color.Dark" ShowLabel="true" @bind-Value="context.Lot_Name" />
+                <BootstrapInputNumber TValue="decimal" Step="1" DisplayText="庫存單位數量" Color="Color.Dark" ShowButton="true" @bind-Value="context.QTY_NORMAL" />
+                <BootstrapInputNumber TValue="decimal" DisplayText="單位價格" Color="Color.Dark" ShowButton="true" @bind-Value="context.QTY_Price" />
+                <BootstrapInputNumber TValue="decimal" DisplayText="單位成本" Color="Color.Dark" ShowButton="true" @bind-Value="context.QTY_Cost" />
+
+                <Select DisplayText="單位"
+                        @bind-Value="context.UNIT_ID"
+                        Color="Color.Dark"
+                        Items="@Model.Data._Unit.Select(x=>{ return new SelectedItem(x.UNIT_ID.ToString(),x.UNIT_DESC); })" />
+            </Row>
+        </EditTemplate>
+    </Table>
+
+    <Pagination PageCount="pageCount" PageIndex="pageIndex" OnPageLinkClick="OnPageLinkClick" class="mt-3" />
+
+    <Button IsOutline="true"
+            IsBlock="true"
+            Color="Color.Success"
+            Size="Size.Large"
+            Text="更改"
+            OnClickWithoutRender="@(()=>{ StateHasChanged(); return Task.CompletedTask; })" />
+
+</Row>

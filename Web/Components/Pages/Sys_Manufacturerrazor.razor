@@ -1,0 +1,87 @@
+﻿@page "/Sys_Manufacturerrazor"
+@attribute [TabItemOption(Text = "廠商設定", Closable = true)]
+
+
+<Row ItemsPerRow="ItemsPerRow.One">
+
+    <Row ColSpan="1">
+        <GroupBox Title="製造商查詢" style="border-color:black;">
+
+            <Row ItemsPerRow="ItemsPerRow.Two">
+                <BootstrapInput TValue="string"
+                                DisplayText="製造商名稱"
+                                ShowLabel="true"
+                                @bind-Value="init.Manufacturer_Name"
+                                Color="Color.Dark" />
+
+                <BootstrapInput TValue="string"
+                                DisplayText="酒廠產地"
+                                ShowLabel="true"
+                                @bind-Value="init.Manufacturer_Origin"
+                                Color="Color.Dark" />
+
+                <Row ColSpan="2">
+                    <Button IsOutline="true"
+                            IsBlock="true"
+                            Color="Color.Success"
+                            Size="Size.Large"
+                            Text="查詢"
+                            OnClickWithoutRender="@(()=>{ StateHasChanged(); return Task.CompletedTask; })" />
+                </Row>
+
+                <Row ColSpan="2">
+                    <Button IsOutline="true"
+                            IsBlock="true"
+                            Color="Color.Success"
+                            Size="Size.Large"
+                            Text="新增"
+                            OnClickWithoutRender="onInsert" />
+                </Row>
+            </Row>
+        </GroupBox>
+    </Row>
+
+
+    <Table TItem="Model.Universal.sys_Manufacturer.outParams"
+           HeaderStyle="TableHeaderStyle.Dark"
+           Items="outParams"
+           IsTracking="true"
+           IsBordered="true"
+           ShowExtendButtons="true"
+           ConfirmDeleteButtonText="刪除"
+           ConfirmDeleteContentText="確認要刪除選中的所有行嗎？"
+           EditButtonText="編輯"
+           EditDialogSaveButtonText="存檔"
+           EditDialogCloseButtonText="關閉"
+           EditModalTitle="編輯庫存"
+           EmptyText="庫存為空"
+           ShowAddButton="true"
+           ShowToastAfterSaveOrDeleteModel="false"
+           EditDialogCloseAsync="onClose"
+           OnDeleteAsync="OnDeleteAsync"
+           IsStriped="true">
+        <TableColumns>
+            <TableColumn @bind-Field="@context.Manufacturer_ID" Text="製造商 ID" />
+            <TableColumn @bind-Field="@context.Manufacturer_Name" Text="製造商名稱" />
+            <TableColumn @bind-Field="@context.Manufacturer_Desc" Text="製造商簡介" />
+            <TableColumn @bind-Field="@context.Manufacturer_Origin" Text="酒廠產地" />
+            <TableColumn @bind-Field="@context.Manufacturer_Tel" Text="酒廠連絡電話" />
+        </TableColumns>
+        <EditTemplate>
+            <Row ItemsPerRow="ItemsPerRow.Two">
+                <BootstrapInput TValue="string" Color="Color.Dark" DisplayText="製造商 ID" ShowLabel="true" Readonly="true" @bind-Value="context.Manufacturer_ID" />
+                <BootstrapInput TValue="string" Color="Color.Dark" DisplayText="製造商名稱" ShowLabel="true" @bind-Value="context.Manufacturer_Name" />
+                <Textarea Color="Color.Dark" DisplayText="製造商簡介" PlaceHolder="請輸入..." ShowLabel="true" @bind-Value="context.Manufacturer_Desc" rows="4" />
+                <BootstrapInput TValue="string" Color="Color.Dark" DisplayText="酒廠產地" ShowLabel="true" @bind-Value="context.Manufacturer_Origin" />
+                <BootstrapInput TValue="string" Color="Color.Dark" DisplayText="酒廠連絡電話" ShowLabel="true" @bind-Value="context.Manufacturer_Tel" />
+            </Row>
+        </EditTemplate>
+    </Table>
+
+    <Button IsOutline="true"
+            IsBlock="true"
+            Color="Color.Success"
+            Size="Size.Large"
+            Text="更改"
+            OnClickWithoutRender="@(()=>{ StateHasChanged(); return Task.CompletedTask; })" />
+</Row>
