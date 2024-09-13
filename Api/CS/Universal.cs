@@ -60,7 +60,7 @@ namespace Api.CS
                                 AND
                                 (Lot_Code = :Lot_Code OR :Lot_Code IS NULL OR :Lot_Code = '')";
 
-            DynamicParameters dynamic = new ();
+            DynamicParameters dynamic = new();
 
             dynamic.Add("Manufacturer_ID", inParams.Manufacturer_ID);
             dynamic.Add("Lot_Name", inParams.Lot_Name);
@@ -70,7 +70,53 @@ namespace Api.CS
                 return con.QueryAsync<Model.Universal.wms_Stock.outParams>(ConStr, dynamic).Result;
         }
 
-        public int wms_Stock_Insert(Model.Universal.wms_Stock.outParams outParams)
+        public IEnumerable<Model.Universal.wms_Stock.outParams> wms_Stock_Query_Page(Model.Universal.wms_Stock.inParams inParams)
+        {
+            string ConStr = @"SELECT *
+                            FROM wms_Stock
+                            WHERE
+                                (Manufacturer_ID = :Manufacturer_ID OR :Manufacturer_ID IS NULL OR :Manufacturer_ID = '')
+                                AND
+                                (Lot_Name = :Lot_Name OR :Lot_Name IS NULL OR :Lot_Name = '')
+                                AND
+                                (Lot_Code = :Lot_Code OR :Lot_Code IS NULL OR :Lot_Code = '')
+                            ORDER BY Manufacturer_ID 
+                            LIMIT 10
+                            OFFSET (:PageNumber - 1) * 10";
+
+            DynamicParameters dynamic = new();
+
+            dynamic.Add("Manufacturer_ID", inParams.Manufacturer_ID);
+            dynamic.Add("Lot_Name", inParams.Lot_Name);
+            dynamic.Add("Lot_Code", inParams.Lot_Code);
+            dynamic.Add("PageNumber", inParams.PageNumber);
+
+            using (var con = sqliteConnect())
+                return con.QueryAsync<Model.Universal.wms_Stock.outParams>(ConStr, dynamic).Result;
+        }
+
+        public int wms_Stock_Query_Count(Model.Universal.wms_Stock.inParams inParams)
+        {
+            string ConStr = @"SELECT count(*) as c
+                            FROM wms_Stock
+                            WHERE
+                                (Manufacturer_ID = :Manufacturer_ID OR :Manufacturer_ID IS NULL OR :Manufacturer_ID = '')
+                                AND
+                                (Lot_Name = :Lot_Name OR :Lot_Name IS NULL OR :Lot_Name = '')
+                                AND
+                                (Lot_Code = :Lot_Code OR :Lot_Code IS NULL OR :Lot_Code = '')";
+
+            DynamicParameters dynamic = new();
+
+            dynamic.Add("Manufacturer_ID", inParams.Manufacturer_ID);
+            dynamic.Add("Lot_Name", inParams.Lot_Name);
+            dynamic.Add("Lot_Code", inParams.Lot_Code);
+
+            using (var con = sqliteConnect())
+                return con.QueryAsync<int>(ConStr, dynamic).Result.First();
+        }
+
+        public int wms_Stock_Insert(List<Model.Universal.wms_Stock.outParams> _outParams)
         {
             string ConStr = @"INSERT INTO wms_Stock (
                             Manufacturer_ID,
@@ -96,17 +142,38 @@ namespace Api.CS
                             QTY_Cost = excluded.QTY_Cost,
                             UNIT_ID = excluded.UNIT_ID";
 
-            DynamicParameters dynamic = new DynamicParameters();
-            dynamic.Add("@Manufacturer_ID", outParams.Manufacturer_ID);
-            dynamic.Add("@Lot_Name", outParams.Lot_Name);
-            dynamic.Add("@Lot_Code", outParams.Lot_Code);
-            dynamic.Add("@QTY_NORMAL", outParams.QTY_NORMAL);
-            dynamic.Add("@QTY_Price", outParams.QTY_Price);
-            dynamic.Add("@QTY_Cost", outParams.QTY_Cost);
-            dynamic.Add("@UNIT_ID", outParams.UNIT_ID);
+            List<DynamicParameters> dynamics = new List<DynamicParameters>();
+            _outParams.ForEach(outParams => 
+            {
+                DynamicParameters dynamic = new DynamicParameters();
+                dynamic.Add("@Manufacturer_ID", outParams.Manufacturer_ID);
+                dynamic.Add("@Lot_Name", outParams.Lot_Name);
+                dynamic.Add("@Lot_Code", outParams.Lot_Code);
+                dynamic.Add("@QTY_NORMAL", outParams.QTY_NORMAL);
+                dynamic.Add("@QTY_Price", outParams.QTY_Price);
+                dynamic.Add("@QTY_Cost", outParams.QTY_Cost);
+                dynamic.Add("@UNIT_ID", outParams.UNIT_ID);
+
+                dynamics.Add(dynamic);
+            });
 
             using (var con = sqliteConnect())
-                return con.ExecuteAsync(ConStr, dynamic).Result;
+                return con.ExecuteAsync(ConStr, dynamics).Result;
+        }
+
+        public int wms_Stock_delete (List<Model.Universal.wms_Stock.outParams> _outParams)
+        {
+            string ConStr = @"delete from wms_Stock where Lot_Code = @Lot_Code";
+            List<DynamicParameters> dynamics = new List<DynamicParameters>();
+            _outParams.ForEach(outParams =>
+            {
+                DynamicParameters dynamic = new DynamicParameters();
+                dynamic.Add("@Lot_Code", outParams.Lot_Code);
+                dynamics.Add(dynamic);
+            });
+
+            using (var con = sqliteConnect())
+                return con.ExecuteAsync(ConStr, dynamics).Result;
         }
 
         public int sys_Manufacturer_Insert(Model.Universal.sys_Manufacturer.outParams outParams)
@@ -129,6 +196,7 @@ namespace Api.CS
             using (var con = sqliteConnect())
                 return con.ExecuteAsync(ConStr, dynamic).Result;
         }
+
 
         private bool disposedValue;
 

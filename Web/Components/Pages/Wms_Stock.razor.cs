@@ -1,12 +1,16 @@
 ﻿using BootstrapBlazor.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using System.Diagnostics.CodeAnalysis;
+using Web.Model;
 
 namespace Web.Components.Pages
 {
     public partial class Wms_Stock
     {
+
+
         [Inject]
         [NotNull]
         private SwalService? SwalService { get; set; }
@@ -17,33 +21,81 @@ namespace Web.Components.Pages
 
         public List<Model.Universal.Wms_Stock.outParams> outParams { set; get; } = new List<Model.Universal.Wms_Stock.outParams>();
 
+        public List<Model.Universal.sys_Manufacturer.outParams> sys_Manufacturer { set; get; } = new List<Universal.sys_Manufacturer.outParams>();
+
+        public List<Model.Universal.sys_Unit.outParams> sys_Unit { set; get; } = new List<Universal.sys_Unit.outParams>();
+
         private int pageCount { get; set; } = 0;
+
         private int pageIndex { get; set; } = 0;
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            outParams = Model.Data.wms_Stocks;
+
+            using (Call callapi = new Call(
+                Model.Universal.ExeUrl + "Universal/sys_Manufacturer_Query",
+                new Dictionary<string, object>().toJson(),
+                HttpMethod.Post))
+            {
+                sys_Manufacturer = callapi.CallAPI().fromJson<List<Model.Universal.sys_Manufacturer.outParams>>();
+                sys_Manufacturer.Insert(0, new Universal.sys_Manufacturer.outParams() 
+                {
+                    Manufacturer_ID = string.Empty,
+                    Manufacturer_Name = "全選"
+                });
+            };
+
+ 
+
+            using (Call callapi = new Call(
+                Model.Universal.ExeUrl + "Universal/sys_unit_Query",
+                new Dictionary<string, object>().toJson(),
+                HttpMethod.Post))
+            {
+                sys_Unit = callapi.CallAPI().fromJson<List<Model.Universal.sys_Unit.outParams>>();
+            };
+
+            Travel_Count();
             Travel_Query(1);
         }
 
         private Task onClose(Model.Universal.Wms_Stock.outParams item, bool saved)
         {
-            var aa = item;
 
             return Task.CompletedTask;
         }
 
-        private Task<bool> OnDeleteAsync(IEnumerable<Model.Universal.Wms_Stock.outParams> items)
+        private async Task<bool> OnDeleteAsync(IEnumerable<Model.Universal.Wms_Stock.outParams> items)
         {
-            items.ToList().ForEach(i => outParams.Remove(i));
-            return Task.FromResult(true);
+            items.ToList().ForEach(async i =>
+            {
+                outParams.Remove(i);
+
+            });
+
+            await delete(items.ToList());
+
+            return await Task.FromResult(true);
         }
 
         private async void onAdd(string obj)
         {
+            using Call callapi = new Call(
+                Model.Universal.ExeUrl + "Universal/wms_Stock_Query",
+                new Model.Universal.Wms_Stock.inParams()
+                {
+                    Lot_Code = obj,
+                }.toJson()
+                , HttpMethod.Post);
 
-            if (outParams.Where(x => x.Lot_Code == obj.Trim()).Count() <= 0)
+            var raw = callapi.CallAPI().fromJson<List<Model.Universal.Wms_Stock.outParams>>();
+
+
+            if (
+                raw.Where(x => x.Lot_Code == obj.Trim()).Count() <= 0 &&
+                outParams.Where(x => x.Lot_Code == obj.Trim()).Count() <= 0
+                )
             {
                 outParams.Insert(0, new Model.Universal.Wms_Stock.outParams()
                 {
@@ -67,6 +119,17 @@ namespace Web.Components.Pages
             }
             else
             {
+                if (
+                    raw.Count > 0 &&
+                    outParams.Where(x => x.Lot_Code == obj.Trim()).Count() <= 0
+                    )
+                {
+                    foreach (var item in raw)
+                    {
+                        outParams.Insert(0, item);
+                    }
+                }
+
                 SwalOption option = new SwalOption()
                 {
                     Category = SwalCategory.Error,
@@ -93,11 +156,112 @@ namespace Web.Components.Pages
             return Task.CompletedTask;
         }
 
+       
+
         private void Travel_Query(int page)
         {
-            int pageC = 10;
-            pageCount = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Convert.ToInt32(Model.Data.wms_Stocks.Count()) / pageC)));
+            using var callApi = new Model.Call(
+                Model.Universal.ExeUrl + "Universal/wms_Stock_Query_Page",
+                new
+                {
+                    pageNumber = page,
+                    Manufacturer_ID = init.Manufacturer_ID,
+                    Lot_Code = init.Lot_Code,
+                    Lot_Name = init.Lot_Name
+                }.toJson(),
+                HttpMethod.Post);
+
+            outParams = callApi.CallAPI().fromJson<List<Model.Universal.Wms_Stock.outParams>>();
+
             StateHasChanged();
         }
+
+        private void Travel_Count()
+        {
+            int pageC = 10;
+
+            using var callApi = new Model.Call(
+                Model.Universal.ExeUrl + "Universal/wms_Stock_Query_Count",
+                new Model.Universal.Wms_Stock.inParams()
+                {
+                    Manufacturer_ID = init.Manufacturer_ID,
+                    Lot_Code = init.Lot_Code,
+                    Lot_Name = init.Lot_Name
+                }.toJson(),
+                HttpMethod.Post);
+
+            pageCount = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Convert.ToInt32((callApi.CallAPI().fromJson<int>()) / pageC))));
+
+            StateHasChanged();
+        }
+
+        private Task insert()
+        {
+            using (Call call = new Call(
+                Model.Universal.ExeUrl + "Universal/wms_Stock_Insert",
+                outParams.toJson(),
+                HttpMethod.Post
+                ))
+            {
+                var res = call.CallAPI();
+                var intbool = int.TryParse(res, out int intres);
+
+                SwalService.ShowModal(new SwalOption()
+                {
+                    Category = SwalCategory.Information,
+                    Content = intbool ? $"本次異動資料 {intres} 筆" : res,
+                    Title = "入庫結果",
+                    IsConfirm = false,
+                    ShowClose = true,
+                    ConfirmButtonText = "確定",
+                    CancelButtonText = "取消"
+                });
+
+                using var callApi = new Model.Call(
+                Model.Universal.ExeUrl + "Universal/wms_Stock_Query_Page",
+                    new
+                    {
+                        pageNumber = 1,
+                        Manufacturer_ID = init.Manufacturer_ID,
+                        Lot_Code = init.Lot_Code,
+                        Lot_Name = init.Lot_Name
+                    }.toJson(),
+                HttpMethod.Post);
+
+                Travel_Count();
+
+                outParams = callApi.CallAPI().fromJson<List<Model.Universal.Wms_Stock.outParams>>();
+            }
+
+            StateHasChanged();
+            return Task.CompletedTask;
+        }
+
+        private async Task delete(List<Model.Universal.Wms_Stock.outParams> raw)
+        {
+            using (Call call = new Call(
+                Model.Universal.ExeUrl + "Universal/wms_Stock_delete",
+                raw.toJson(),
+                HttpMethod.Post))
+            {
+                string res = call.CallAPI();
+                var intbool = int.TryParse(res, out int intres);
+
+                await SwalService.ShowModal(new SwalOption()
+                {
+                    Category = SwalCategory.Information,
+                    Content = intbool ? $"本次異動資料 {intres} 筆" : res,
+                    Title = "入庫結果",
+                    IsConfirm = false,
+                    ShowClose = true,
+                    ConfirmButtonText = "確定",
+                    CancelButtonText = "取消"
+                });
+            }
+
+            StateHasChanged();
+        }
+
+
     }
 }

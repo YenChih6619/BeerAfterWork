@@ -87,7 +87,7 @@ namespace Web.Model
     {
         public static string ExeUrl { get; set; } = @"http://localhost:5000/";
 
-        public class SYS_Cart
+        public class sys_Cart
         {
             public class inParams
             {
@@ -185,7 +185,7 @@ namespace Web.Model
             }
         }
 
-        public class SYS_Unit
+        public class sys_Unit
         {
             public class inParams
             {
@@ -275,7 +275,20 @@ namespace Web.Model
         {
             public class inParams
             {
+                /// <summary>
+                /// 製造商 ID
+                /// </summary>
+                public string Manufacturer_ID { set; get; }
 
+                /// <summary>
+                /// 產品名稱
+                /// </summary>
+                public string Lot_Name { set; get; }
+
+                /// <summary>
+                /// 標籤編號
+                /// </summary>
+                public string Lot_Code { set; get; }
             }
 
             public class outParams
@@ -336,150 +349,33 @@ namespace Web.Model
 
         }
 
-    }
-
-    public static class Data
-    {
-        public static List<sys_Manufacturer.outParams> _Manufacturer = new List<sys_Manufacturer.outParams>()
+        public class sys_Table
         {
-           new ()
-           {
-               Manufacturer_ID ="10001",
-               Manufacturer_Desc = "",
-               Manufacturer_Name = "臺虎精釀",
-               Manufacturer_Origin = "台灣",
-               Manufacturer_Tel = "0800-000-000"
-           },
-           new ()
-           {
-               Manufacturer_ID ="10002",
-               Manufacturer_Desc = "",
-               Manufacturer_Name = "掌門精釀",
-               Manufacturer_Origin = "台灣",
-               Manufacturer_Tel = "0800-000-000"
-           },
-           new ()
-           {
-               Manufacturer_ID ="10003",
-               Manufacturer_Desc = "",
-               Manufacturer_Name = "吉姆老爹",
-               Manufacturer_Origin = "台灣",
-               Manufacturer_Tel = "0800-000-000"
-           },
-           new ()
-           {
-               Manufacturer_ID ="10004",
-               Manufacturer_Desc = "",
-               Manufacturer_Name = "啤酒頭",
-               Manufacturer_Origin = "台灣",
-               Manufacturer_Tel = "0800-000-000"
-           },
-           new ()
-           {
-               Manufacturer_ID ="10005",
-               Manufacturer_Desc = "",
-               Manufacturer_Name = "酉鬼啤酒",
-               Manufacturer_Origin = "台灣",
-               Manufacturer_Tel = "0800-000-000"
-           },
-           new ()
-           {
-               Manufacturer_ID ="10006",
-               Manufacturer_Desc = "",
-               Manufacturer_Name = "台中禾樂精釀所",
-               Manufacturer_Origin = "台灣",
-               Manufacturer_Tel = "0800-000-000"
-           }
-        };
+            /// <summary>
+            /// 餐桌名稱，作為主鍵使用。
+            /// </summary>
+            public string table_Name { get; set; }
 
-        public static List<SYS_Unit.outParams> _Unit = new List<SYS_Unit.outParams>()
-        {
-            new ()
-            {
-                UNIT_ID = 10001,
-                UNIT_DESC = "罐",
-                UNIT_NO = "CAN"
-            },
-            new ()
-            {
-                UNIT_ID = 10002,
-                UNIT_DESC = "Bottle 瓶",
-                UNIT_NO = "BOT"
-            },
+            /// <summary>
+            /// 餐桌的座位數量。
+            /// </summary>
+            public int seat_Count { get; set; }
 
-            new ()
-            {
-                UNIT_ID = 10003,
-                UNIT_DESC = "Bucket 桶",
-                UNIT_NO = "BKT"
-            },
+            /// <summary>
+            /// 指示餐桌是否為私人房間。若為私人房間則為 true，否則為 false。
+            /// </summary>
+            public bool isPrivate_Room { get; set; }
 
-            new()
-            {
-                UNIT_ID = 10004,
-                UNIT_DESC = "Liter 公升",
-                UNIT_NO = "LTR"
-            },
+            /// <summary>
+            /// 餐桌的狀態。
+            /// </summary>
+            public int table_Status { get; set; }
 
-            new ()
-            {
-                UNIT_ID = 10005,
-                UNIT_DESC = "Milliliter 豪升",
-                UNIT_NO = "LTR"
-            },
-
-            new ()
-            {
-                UNIT_ID = 10001,
-                UNIT_DESC = "British Gallon (Imperial Gallon) 加侖",
-                UNIT_NO = "BGA"
-            },
-
-        };
-
-        public static List<Model.Universal.Wms_Stock.outParams> wms_Stocks = new List<Universal.Wms_Stock.outParams>()
-        {
-            new()
-            {
-                Manufacturer_ID = "10001",
-                Lot_Code = "0123456789",
-                Lot_Name = "台虎生啤(嗨)",
-                QTY_NORMAL = 10,
-                QTY_Cost = 150,
-                QTY_Price = 240,
-                UNIT_ID = 10001
-            },
-            new()
-            {
-                Manufacturer_ID = "10001",
-                Lot_Code = "0123456781",
-                Lot_Name = "希密爾之歌",
-                QTY_NORMAL = 10,
-                QTY_Cost = 150,
-                QTY_Price = 240,
-                UNIT_ID = 10001
-            },
-            new()
-            {
-                Manufacturer_ID = "10005",
-                Lot_Code = "0123456782",
-                Lot_Name = "R&D 88 無果汁 Hazy Sour",
-                QTY_NORMAL = 10,
-                QTY_Cost = 150,
-                QTY_Price = 240,
-                UNIT_ID = 10002
-            },
-            new()
-            {
-                Manufacturer_ID = "10005",
-                Lot_Code = "0123456783",
-                Lot_Name = "芭樂鹽小麥",
-                QTY_NORMAL = 10,
-                QTY_Cost = 150,
-                QTY_Price = 240,
-                UNIT_ID = 10002
-            }
-        };
+            /// <summary>
+            /// 餐桌的備註信息。
+            /// </summary>
+            public string memo { get; set; }
+        }
     }
 
     public static class Extension

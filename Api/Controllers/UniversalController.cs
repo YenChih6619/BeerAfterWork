@@ -45,12 +45,42 @@ namespace Api.Controllers
             }
         }
 
+        [HttpPost("Universal/wms_Stock_Query_Page")]
+        public ActionResult wms_Stock_Query_Page([FromBody] Model.Universal.wms_Stock.inParams inParams)
+        {
+            using (CS.Universal Universal = new CS.Universal())
+            {
+                var Result = Universal.wms_Stock_Query_Page(inParams);
+                return Content(JsonConvert.SerializeObject(Result, formatting: Formatting.Indented), "application/json");
+            }
+        }
+
+        [HttpPost("Universal/wms_Stock_Query_Count")]
+        public ActionResult wms_Stock_Query_Count([FromBody] Model.Universal.wms_Stock.inParams inParams)
+        {
+            using (CS.Universal Universal = new CS.Universal())
+            {
+                var Result = Universal.wms_Stock_Query_Count(inParams);
+                return Content(JsonConvert.SerializeObject(Result, formatting: Formatting.Indented), "application/json");
+            }
+        }
+
         [HttpPost("Universal/wms_Stock_Insert")]
-        public ActionResult wms_Stock_Insert([FromBody] Model.Universal.wms_Stock.outParams inParams)
+        public ActionResult wms_Stock_Insert([FromBody] List<Model.Universal.wms_Stock.outParams> inParams)
         {
             using (CS.Universal Universal = new CS.Universal())
             {
                 var Result = Universal.wms_Stock_Insert(inParams);
+                return Content(JsonConvert.SerializeObject(Result, formatting: Formatting.Indented), "application/json");
+            }
+        }
+
+        [HttpPost("Universal/wms_Stock_delete")]
+        public ActionResult wms_Stock_delete([FromBody] List<Model.Universal.wms_Stock.outParams> inParams)
+        {
+            using (CS.Universal Universal = new CS.Universal())
+            {
+                var Result = Universal.wms_Stock_delete(inParams);
                 return Content(JsonConvert.SerializeObject(Result, formatting: Formatting.Indented), "application/json");
             }
         }

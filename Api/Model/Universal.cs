@@ -70,6 +70,11 @@
             public class inParams
             {
                 /// <summary>
+                /// 分頁數
+                /// </summary>
+                public int PageNumber { set; get; } = 1;
+
+                /// <summary>
                 /// 製造商 ID
                 /// </summary>
                 public string Manufacturer_ID { set; get; }

@@ -10,8 +10,11 @@
                 <Select TValue="string"
                         DisplayText="廠商"
                         Color="Color.Dark"
+                        IsClearable="true"
                         @bind-Value="init.Manufacturer_ID"
-                        Items="Model.Data._Manufacturer.Select(x=>{return new SelectedItem(x.Manufacturer_ID,x.Manufacturer_Name);})"
+                        Items="sys_Manufacturer.Select(x=>{
+                            return new SelectedItem(x.Manufacturer_ID,x.Manufacturer_Name);
+                        })"
                         ShowLabel="true" />
 
                 <BootstrapInput TValue="string"
@@ -26,13 +29,14 @@
                                 @bind-Value="init.Lot_Code"
                                 Color="Color.Dark" />
 
+
                 <Row ColSpan="2">
                     <Button IsOutline="true"
                             IsBlock="true"
                             Color="Color.Success"
                             Size="Size.Large"
                             Text="查詢"
-                            OnClickWithoutRender="@(()=>{ StateHasChanged(); return Task.CompletedTask; })" />
+                            OnClickWithoutRender="@(()=>{ Travel_Query(1); Travel_Count();  StateHasChanged(); return Task.CompletedTask; })" />
                 </Row>
 
             </Row>
@@ -84,7 +88,7 @@
                 <Select DisplayText="廠商"
                         Color="Color.Dark"
                         @bind-Value="context.Manufacturer_ID"
-                        Items="@Model.Data._Manufacturer.Select(x=>{ return new SelectedItem(x.Manufacturer_ID,x.Manufacturer_Name); })" />
+                        Items="@sys_Manufacturer.Select(x=>{ return new SelectedItem(x.Manufacturer_ID,x.Manufacturer_Name); })" />
 
                 <Row ColSpan="2">
                     <BootstrapInput TValue="string" Color="Color.Dark" DisplayText="標籤編號" ShowLabel="true" @bind-Value="context.Lot_Code" />
@@ -99,7 +103,7 @@
                 <Select DisplayText="單位"
                         @bind-Value="context.UNIT_ID"
                         Color="Color.Dark"
-                        Items="@Model.Data._Unit.Select(x=>{ return new SelectedItem(x.UNIT_ID.ToString(),x.UNIT_DESC); })" />
+                        Items="@sys_Unit.Select(x=>{ return new SelectedItem(x.UNIT_ID.ToString(),x.UNIT_DESC); })" />
             </Row>
         </EditTemplate>
     </Table>
@@ -110,7 +114,8 @@
             IsBlock="true"
             Color="Color.Success"
             Size="Size.Large"
+            IsAsync=true
             Text="更改"
-            OnClickWithoutRender="@(()=>{ StateHasChanged(); return Task.CompletedTask; })" />
+            OnClickWithoutRender="insert" />
 
 </Row>
