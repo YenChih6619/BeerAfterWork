@@ -95,7 +95,34 @@ namespace Api.Controllers
             }
         }
 
+        [HttpPost("Universal/sys_Table_Query")]
+        public ActionResult sys_Table_Query([FromBody] Model.Universal.sys_Table.inParams inParams)
+        {
+            using (CS.Universal Universal = new CS.Universal())
+            {
+                var Result = Universal.sys_Table_Query(inParams);
+                return Content(JsonConvert.SerializeObject(Result, formatting: Formatting.Indented), "application/json");
+            }
+        }
 
+        [HttpPost("Universal/sys_Table_Insert")]
+        public ActionResult sys_Table_Insert([FromBody] List<Model.Universal.sys_Table.outParams> inParams)
+        {
+            using (CS.Universal Universal = new CS.Universal())
+            {
+                var Result = Universal.sys_Table_Insert(inParams);
+                return Content(JsonConvert.SerializeObject(Result, formatting: Formatting.Indented), "application/json");
+            }
+        }
 
+        [HttpPost("Universal/sys_Table_delete")]
+        public ActionResult sys_Table_delete([FromBody] List<Model.Universal.sys_Table.outParams> inParams)
+        {
+            using (CS.Universal Universal = new CS.Universal())
+            {
+                var Result = Universal.sys_Table_delete(inParams);
+                return Content(JsonConvert.SerializeObject(Result, formatting: Formatting.Indented), "application/json");
+            }
+        }
     }
 }

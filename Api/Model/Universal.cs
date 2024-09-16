@@ -174,5 +174,46 @@
                 public int Count { set; get; }
             }
         }
+
+        public class sys_Table
+        {
+            public class inParams
+            {
+                /// <summary>
+                /// 餐桌名稱，作為主鍵使用。
+                /// </summary>
+                public string table_Name { get; set; }
+
+             
+            }
+
+            public class outParams
+            {
+                /// <summary>
+                /// 餐桌名稱，作為主鍵使用。
+                /// </summary>
+                public string table_Name { get; set; }
+
+                /// <summary>
+                /// 餐桌的座位數量。
+                /// </summary>
+                public int seat_Count { get; set; }
+
+                /// <summary>
+                /// 指示餐桌是否為私人房間。若為私人房間則為 true，否則為 false。
+                /// </summary>
+                public bool isPrivate_Room { get; set; }
+
+                /// <summary>
+                /// 餐桌的狀態。
+                /// </summary>
+                public int table_Status { get; set; }
+
+                /// <summary>
+                /// 餐桌的備註信息。
+                /// </summary>
+                public string memo { get; set; }
+            }      
+        }
     }
 }

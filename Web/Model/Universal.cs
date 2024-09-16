@@ -351,30 +351,40 @@ namespace Web.Model
 
         public class sys_Table
         {
-            /// <summary>
-            /// 餐桌名稱，作為主鍵使用。
-            /// </summary>
-            public string table_Name { get; set; }
+            public class outParams
+            {
 
-            /// <summary>
-            /// 餐桌的座位數量。
-            /// </summary>
-            public int seat_Count { get; set; }
+                /// <summary>
+                /// 餐桌名稱，作為主鍵使用。
+                /// </summary>
+                [Display(Name = "餐桌編號")]
+                public string table_Name { get; set; }
 
-            /// <summary>
-            /// 指示餐桌是否為私人房間。若為私人房間則為 true，否則為 false。
-            /// </summary>
-            public bool isPrivate_Room { get; set; }
+                /// <summary>
+                /// 餐桌的座位數量。
+                /// </summary>
+                [Display(Name = "座位人數")]
+                public int seat_Count { get; set; }
 
-            /// <summary>
-            /// 餐桌的狀態。
-            /// </summary>
-            public int table_Status { get; set; }
+                /// <summary>
+                /// 指示餐桌是否為私人房間。若為私人房間則為 true，否則為 false。
+                /// </summary>
+                [Display(Name = "是否結帳")]
+                public bool isPrivate_Room { get; set; } = true;
 
-            /// <summary>
-            /// 餐桌的備註信息。
-            /// </summary>
-            public string memo { get; set; }
+                /// <summary>
+                /// 餐桌的狀態。
+                /// </summary>
+                [Display(Name = "餐桌狀態")]
+            
+                public int table_Status { get; set; } = 0;
+
+                /// <summary>
+                /// 餐桌的備註信息。
+                /// </summary>
+                [Display(Name = "備註")]
+                public string memo { get; set; }
+            }
         }
     }
 

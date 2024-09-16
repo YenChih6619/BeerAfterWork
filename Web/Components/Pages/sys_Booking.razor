@@ -1,1 +1,14 @@
-﻿
+﻿@page "/Sys_Booking"
+@attribute [TabItemOption(Text = "訂位功能", Closable = true)]
+
+
+<Split>
+    <FirstPaneTemplate>
+        <Calendar ViewMode="CalendarViewMode.Week" />
+    </FirstPaneTemplate>
+    <SecondPaneTemplate>
+        <EditForm Model="new  Model.Universal.sys_Table.outParams()">
+            
+        </EditForm>
+    </SecondPaneTemplate>
+</Split>

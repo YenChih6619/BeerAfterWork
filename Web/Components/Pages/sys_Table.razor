@@ -1,5 +1,45 @@
-﻿<h3>sys_Table</h3>
+﻿@page "/Sys_Table"
+@attribute [TabItemOption(Text = "座位編輯", Closable = true)]
 
-@code {
+<Table TItem="Model.Universal.sys_Table.outParams"
+       IsPagination="true"
+       PageItemsSource="(new int[] {10,20,30,40})"
+       IsStriped="true"
+       IsBordered="true"
+       IsMultipleSelect="true"
+       ShowToolbar="true"
+       ShowDefaultButtons="true"
+       ShowSearch="false"
+       ShowExtendButtons="false"
+       OnQueryAsync="OnQueryAsync">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.table_Name" />
+        <TableColumn @bind-Field="@context.isPrivate_Room" IsReadonlyWhenAdd="true" >
+            <Template Context="v">
+                @{
+                    if (v.Row.isPrivate_Room)
+                    {
+                        <div>
+                            <p style="background-color:rgb(190,0,0);color:white">
+                                未結帳
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <p style="background-color:rgb(60, 179, 113);color:white">
+                                已結帳
+                            </p>
+                        </div>
+                    }
+                }
+            </Template>
+        </TableColumn>
+        <TableColumn @bind-Field="@context.seat_Count" />
+        <TableColumn @bind-Field="@context.table_Status" IsVisibleWhenAdd="false" IsVisibleWhenEdit="false" />
+        <TableColumn @bind-Field="@context.memo" />
+    </TableColumns>
 
-}
+
+</Table>

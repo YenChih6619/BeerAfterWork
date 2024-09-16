@@ -143,7 +143,7 @@ namespace Api.CS
                             UNIT_ID = excluded.UNIT_ID";
 
             List<DynamicParameters> dynamics = new List<DynamicParameters>();
-            _outParams.ForEach(outParams => 
+            _outParams.ForEach(outParams =>
             {
                 DynamicParameters dynamic = new DynamicParameters();
                 dynamic.Add("@Manufacturer_ID", outParams.Manufacturer_ID);
@@ -161,7 +161,7 @@ namespace Api.CS
                 return con.ExecuteAsync(ConStr, dynamics).Result;
         }
 
-        public int wms_Stock_delete (List<Model.Universal.wms_Stock.outParams> _outParams)
+        public int wms_Stock_delete(List<Model.Universal.wms_Stock.outParams> _outParams)
         {
             string ConStr = @"delete from wms_Stock where Lot_Code = @Lot_Code";
             List<DynamicParameters> dynamics = new List<DynamicParameters>();
@@ -197,6 +197,79 @@ namespace Api.CS
                 return con.ExecuteAsync(ConStr, dynamic).Result;
         }
 
+        public IEnumerable<Model.Universal.sys_Table.outParams> sys_Table_Query(Model.Universal.sys_Table.inParams inParams)
+        {
+            string ConStr = @"SELECT
+                              *
+                            FROM sys_Table
+                            WHERE table_Name = :table_Name
+                            OR :table_Name IS NULL
+                            OR :table_Name = ''";
+
+            DynamicParameters dynamic = new();
+
+            dynamic.Add(":table_Name", inParams.table_Name);
+
+            using (var con = sqliteConnect())
+                return con.QueryAsync<Model.Universal.sys_Table.outParams>(ConStr, dynamic).Result;
+
+        }
+
+        public int sys_Table_Insert(List<Model.Universal.sys_Table.outParams> _outParams)
+        {
+            string ConStr = @"INSERT INTO sys_Table (
+                            table_Name,
+                            seat_Count,
+                            isPrivate_Room,
+                            table_Status,
+                            memo
+                        ) VALUES (
+                            @table_Name,
+                            @seat_Count,
+                            @isPrivate_Room,
+                            @table_Status,
+                            @memo
+                        )
+                        ON CONFLICT(table_Name) DO UPDATE SET
+                            seat_Count = excluded.seat_Count,
+                            isPrivate_Room = excluded.isPrivate_Room,
+                            table_Status = excluded.table_Status,
+                            memo = excluded.memo";
+
+            List<DynamicParameters> dynamics = new List<DynamicParameters>();
+            _outParams.ForEach(outParams =>
+            {
+                DynamicParameters dynamic = new DynamicParameters();
+                dynamic.Add("@table_Name", outParams.table_Name);
+                dynamic.Add("@seat_Count", outParams.seat_Count);
+                dynamic.Add("@isPrivate_Room", outParams.isPrivate_Room);
+                dynamic.Add("@table_Status", outParams.table_Status);
+                dynamic.Add("@memo", outParams.memo);
+
+                dynamics.Add(dynamic);
+            });
+
+            using (var con = sqliteConnect())
+                return con.ExecuteAsync(ConStr, dynamics).Result;
+        }
+
+        public int sys_Table_delete(List<Model.Universal.sys_Table.outParams> _outParams)
+        {
+            string ConStr = @"DELETE FROM sys_Table
+                            WHERE table_Name = :table_Name";
+
+            List<DynamicParameters> dynamics = new List<DynamicParameters>();
+            _outParams.ForEach(outParams =>
+            {
+                DynamicParameters dynamic = new DynamicParameters();
+                dynamic.Add(":table_Name", outParams.table_Name);
+
+                dynamics.Add(dynamic);
+            });
+
+            using (var con = sqliteConnect())
+                return con.ExecuteAsync(ConStr, dynamics).Result;
+        }
 
         private bool disposedValue;
 
