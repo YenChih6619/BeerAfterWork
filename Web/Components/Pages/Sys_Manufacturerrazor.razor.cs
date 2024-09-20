@@ -1,6 +1,7 @@
 ﻿using BootstrapBlazor.Components;
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using Web.Model;
 using static Web.Model.Extension;
 
@@ -36,16 +37,47 @@ namespace Web.Components.Pages
             outParams = callApi.CallAPI().fromJson<List<Model.Universal.sys_Manufacturer.outParams>>();
         }
 
+
         private Task onClose(Model.Universal.sys_Manufacturer.outParams item, bool saved)
         {
-            var aa = item;
+            if (saved == false) { return Task.CompletedTask; }
 
+            using var callapi = new Call(
+                       Model.Universal.ExeUrl + "Universal/sys_Manufacturer_Insert",
+                       item.toJson(),
+                       HttpMethod.Post);
+            var res = callapi.CallAPI();
+
+            StateHasChanged();
             return Task.CompletedTask;
         }
 
         private Task<bool> OnDeleteAsync(IEnumerable<Model.Universal.sys_Manufacturer.outParams> items)
         {
-            items.ToList().ForEach(i => outParams.Remove(i));
+            using (Call call = new Call(
+                Model.Universal.ExeUrl + "Universal/sys_Manufacturer_delete",
+                "",
+                HttpMethod.Post
+                ))
+            {
+                foreach (var item in items.ToList())
+                {
+                    call._jsonData = item.toJson();
+                    call.CallAPI();
+                }
+
+                call._url = Model.Universal.ExeUrl + "Universal/sys_Manufacturer_Query";
+                call._jsonData = new Model.Universal.sys_Manufacturer.inParams()
+                {
+                    Manufacturer_Name = init.Manufacturer_Name,
+                    Manufacturer_Origin = init.Manufacturer_Origin
+
+                }.toJson();
+
+                outParams = call.CallAPI().fromJson<List<Model.Universal.sys_Manufacturer.outParams>>();
+            }
+
+            StateHasChanged();
             return Task.FromResult(true);
         }
 
@@ -56,7 +88,7 @@ namespace Web.Components.Pages
             foreach (var ite in item)
             {
                 ite.PlaceHolder = "請輸入";
-                if (ite.Text == "製造商 ID")                
+                if (ite.Text == "製造商 ID")
                 {
                     ite.Readonly = true;
                     ite.SkipValidate = false;
@@ -78,9 +110,9 @@ namespace Web.Components.Pages
                 },
                 OnEditAsync = context =>
                 {
-  
+
                     using var callapi = new Call(
-                        Model.Universal.ExeUrl + "/Universal/sys_Manufacturer_Insert",
+                        Model.Universal.ExeUrl + "Universal/sys_Manufacturer_Insert",
                         context.Model.toJson(),
                         HttpMethod.Post
                         );
@@ -102,8 +134,20 @@ namespace Web.Components.Pages
             };
 
             await DialogService.ShowEditDialog(option);
+        }
 
+        private void onQuery()
+        {
+            using var callApi = new Model.Call(
+               Model.Universal.ExeUrl + "Universal/sys_Manufacturer_Query",
+               new Model.Universal.sys_Manufacturer.inParams()
+               {
+                   Manufacturer_Name = init.Manufacturer_Name,
+                   Manufacturer_Origin = init.Manufacturer_Origin
 
+               }.toJson(),
+               HttpMethod.Post);
+            outParams = callApi.CallAPI().fromJson<List<Model.Universal.sys_Manufacturer.outParams>>();
         }
     }
 }

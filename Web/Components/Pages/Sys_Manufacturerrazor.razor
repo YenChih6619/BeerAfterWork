@@ -26,7 +26,7 @@
                             Color="Color.Success"
                             Size="Size.Large"
                             Text="查詢"
-                            OnClickWithoutRender="@(()=>{ StateHasChanged(); return Task.CompletedTask; })" />
+                            OnClickWithoutRender="@(()=>{ onQuery(); StateHasChanged(); return Task.CompletedTask; })" />
                 </Row>
 
                 <Row ColSpan="2">
@@ -77,11 +77,4 @@
             </Row>
         </EditTemplate>
     </Table>
-
-    <Button IsOutline="true"
-            IsBlock="true"
-            Color="Color.Success"
-            Size="Size.Large"
-            Text="更改"
-            OnClickWithoutRender="@(()=>{ StateHasChanged(); return Task.CompletedTask; })" />
 </Row>

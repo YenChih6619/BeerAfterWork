@@ -40,117 +40,187 @@
 </style>
 
 
+<Row>
+    <GroupBox>
 
-<div>
-    <div class="container">
-        <div class="left-panel">
-            <!-- 左側內容 -->
-            <ListView TItem="Model.Universal.sys_ProductList.outParams"
-                      GroupName="p => p.manufacturer_Name"
-                      Collapsible="true"
-                      Items="outParams">
-                <BodyTemplate>
-                    <Card>
-                        <BodyTemplate>
-                            <Row ItemsPerRow="ItemsPerRow.One">
-                                @{
-                                    <Row>
-                                        <h3>@context.lot_Name</h3>
-                                        <p><strong>廠商名稱：</strong>@context.manufacturer_Name</p>
-                                        <p><strong>產地：</strong>@context.manufacturer_Origin</p>
-                                        <p><strong>庫存數量：</strong><span class="stock">@context.Qty_Noraml </span></p>
-                                        <p style="font-size:x-large"><strong>價格：</strong><span class="stock">@context.Qty_Price </span></p>
-                                    </Row>
+        <Row>
+            <SelectObject @bind-Value="sys_Table" GetTextCallback="GetTextCallback">
+                <ListView TItem="Model.Universal.sys_Table.outParams" Items="@sys_Table_Query" OnListViewItemClick="item => OnListViewItemClick(item, context)">
+                    <BodyTemplate Context="value">
+                        <Card>
+                            <BodyTemplate>
+                                <Row ItemsPerRow="ItemsPerRow.One">
 
-                                    <Button IsOutline="true"
-                                            IsBlock="true"
-                                            Color="Color.Success"
-                                            Size="Size.Medium"
-                                            Text="確認"
-                                            OnClickWithoutRender="@(()=>{ onConfirm(context); StateHasChanged(); return Task.CompletedTask; })" />
-                                }
-
-                            </Row>
-                        </BodyTemplate>
-                    </Card>
-                </BodyTemplate>
-            </ListView>
-        </div>
-        <div class="right-panel">
-            <!-- 右側內容 -->
-
-            <Card>
-                <HeaderTemplate>
-                    <Row RowType="RowType.Normal">
-                        <BootstrapInput TValue="string"
-                                        ShowLabel="true"
-                                        DisplayText="條碼編號"
-                                        OnEnterAsync="@((string obj )=>{ onEnter(obj); StateHasChanged(); return Task.CompletedTask; })"
-                                        @ref="lotCodeRef" />
-                    </Row>
-                </HeaderTemplate>
-                <BodyTemplate>
-                    <Table TItem="Model.Universal.sys_Cart.outParams"
-                           style="height:50vh;"
-                           Items="Consumption"
-                           HeaderStyle="TableHeaderStyle.Dark"
-                           IsStriped="true">
-                        <TableColumns>
-                            <TableColumn @bind-Field="@context.Lot_Name" Text="產品名稱" />
-                            <TableColumn Width="40" @bind-Field="@context.QTY_Price" Text="單價" Align="Alignment.Center" />
-                            <TableColumn Width="150" @bind-Field="@context.Count" Text="單位數" Align="Alignment.Center">
-                                <Template Context="v">
-                                    <BootstrapInputNumber ShowButton="true"
-                                                          @bind-Value="@v.Row.Count"
-                                                          Min="1"
-                                                          Step="1"
-                                                          Color="Color.Dark" />
-                                </Template>
-                            </TableColumn>
-                            <TableColumn Width="40" @bind-Field="@context.QTY_Price" Text="總價" Align="Alignment.Center">
-                                <Template Context="v">
-                                    <p style="text-align:center; justify-content:center;">
-                                        <strong>
-                                            @v.Row.Amount
-                                        </strong>
+                                    <h5 class="card-title" style="text-align:center;">@value.table_Name</h5>
+                                    <p class="card-text">
+                                    <p style="margin-right:1%;">座位數:</p>
+                                    <i class="fas fa-chair" style="margin-right:1%;" />
+                                    <strong>@value.seat_Count</strong>
                                     </p>
-                                </Template>
-                            </TableColumn>
 
-                            <TableColumn Width="20" @bind-Field="@context.Lot_Code" Text="@string.Empty">
-                                <Template Context="v">
+                                    @{
+                                        if (value.isPrivate_Room)
+                                        {
+                                            <p style="background-color:rgb(60, 179, 113);color:white;margin-bottom:auto;text-align:center; "> 已結帳  </p>
+                                        }
+                                        else
+                                        {
+                                            <p style="background-color:rgb(190,0,0);color:white;margin-bottom:auto;text-align:center; "> 未結帳 </p>
+                                        }
+
+                                    }
+
+
+                                </Row>
+                            </BodyTemplate>
+                        </Card>
+                    </BodyTemplate>
+                </ListView>
+            </SelectObject>
+        </Row>
+
+    </GroupBox>
+
+    <GroupBox>
+        <div>
+            <div class="container">
+                <div class="left-panel">
+                    <!-- 左側內容 -->
+                    <ListView TItem="Model.Universal.sys_ProductList.outParams"
+                              GroupName="p => p.manufacturer_Name"
+                              Collapsible="true"
+                              Items="outParams">
+                        <BodyTemplate>
+                            <Card>
+                                <BodyTemplate>
+                                    <Row ItemsPerRow="ItemsPerRow.One">
+                                        @{
+                                            <Row>
+                                                <h3>@context.lot_Name</h3>
+                                                <p><strong>廠商名稱：</strong>@context.manufacturer_Name</p>
+                                                <p><strong>產地：</strong>@context.manufacturer_Origin</p>
+                                                <p><strong>庫存數量：</strong><span class="stock">@context.Qty_Noraml </span></p>
+                                                <p style="font-size:x-large"><strong>價格：</strong><span class="stock">@context.Qty_Price </span></p>
+                                            </Row>
+
+                                            <Button IsOutline="true"
+                                                    IsBlock="true"
+                                                    Color="Color.Success"
+                                                    Size="Size.Medium"
+                                                    Text="確認"
+                                                    OnClickWithoutRender="@(()=>{ onConfirm(context); StateHasChanged(); return Task.CompletedTask; })" />
+                                        }
+
+                                    </Row>
+                                </BodyTemplate>
+                            </Card>
+                        </BodyTemplate>
+                    </ListView>
+                </div>
+                <div class="right-panel">
+                    <!-- 右側內容 -->
+
+                    @{
+                        if (sys_Table.isPrivate_Room)
+                        {
+                            <div class="alert alert-secondary mt-4" role="alert" style="background-color: darkgray; text-align:center;" @onclick="onTake">
+                                <span class="oi oi-pencil me-2" aria-hidden="true"></span>
+                                <strong>@sys_Table.table_Name</strong>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-secondary mt-4" role="alert" style="background-color: rgb(190,0,0); color:white; text-align:center;" @onclick="onTake">
+                                <span class="oi oi-pencil me-2" aria-hidden="true"></span>
+                                <strong>@sys_Table.table_Name</strong>
+                            </div>
+                        }
+
+                    }
+
+                    <Card>
+                        <HeaderTemplate>
+                            <Row RowType="RowType.Normal">
+                                <BootstrapInput TValue="string"
+                                                ShowLabel="true"
+                                                DisplayText="條碼編號"
+                                                OnEnterAsync="@((string obj )=>{ onEnter(obj); StateHasChanged(); return Task.CompletedTask; })"
+                                                @ref="lotCodeRef" />
+                            </Row>
+                        </HeaderTemplate>
+                        <BodyTemplate>
+                            <Table TItem="Model.Universal.sys_Cart.outParams"
+                                   style="height:50vh;"
+                                   Items="Consumption"
+                                   HeaderStyle="TableHeaderStyle.Dark"
+                                   IsStriped="true">
+                                <TableColumns>
+                                    <TableColumn @bind-Field="@context.Lot_Name" Text="產品名稱" />
+                                    <TableColumn Width="40" @bind-Field="@context.QTY_Price" Text="單價" Align="Alignment.Center" />
+                                    <TableColumn Width="150" @bind-Field="@context.Count" Text="單位數" Align="Alignment.Center">
+                                        <Template Context="v">
+                                            <BootstrapInputNumber ShowButton="true"
+                                                                  @bind-Value="@v.Row.Count"
+                                                                  Min="1"
+                                                                  Step="1"
+                                                                  Color="Color.Dark" />
+                                        </Template>
+                                    </TableColumn>
+                                    <TableColumn Width="40" @bind-Field="@context.QTY_Price" Text="總價" Align="Alignment.Center">
+                                        <Template Context="v">
+                                            <p style="text-align:center; justify-content:center;">
+                                                <strong>
+                                                    @v.Row.Amount
+                                                </strong>
+                                            </p>
+                                        </Template>
+                                    </TableColumn>
+
+                                    <TableColumn Width="20" @bind-Field="@context.Lot_Code" Text="@string.Empty">
+                                        <Template Context="v">
+                                            <Button IsOutline="true"
+                                                    IsBlock="true"
+                                                    Color="Color.Danger"
+                                                    Text="刪除"
+                                                    Icon="fas fa-trash"
+                                                    OnClickWithoutRender="(()=>{ Consumption.Remove(v.Row); StateHasChanged(); return Task.CompletedTask;})" />
+                                        </Template>
+                                    </TableColumn>
+
+                                </TableColumns>
+                            </Table>
+                        </BodyTemplate>
+                        <FooterTemplate>
+                            <Row ItemsPerRow="ItemsPerRow.Three">
+                                <Row ColSpan="2">
+                                    <p><strong> 合計: @Consumption.Sum(x => x.Amount)</strong></p>
+                                </Row>
+                                <Row>
                                     <Button IsOutline="true"
                                             IsBlock="true"
-                                            Color="Color.Danger"
-                                            Text="刪除"
-                                            Icon="fas fa-trash"
-                                            OnClickWithoutRender="(()=>{ Consumption.Remove(v.Row); StateHasChanged(); return Task.CompletedTask;})" />
-                                </Template>
-                            </TableColumn>
-
-                        </TableColumns>
-                    </Table>
-                </BodyTemplate>
-                <FooterTemplate>
-                    <Row ItemsPerRow="ItemsPerRow.Three">
-                        <Row ColSpan="2">
-                            <p><strong> 合計: @Consumption.Sum(x => x.Amount)</strong></p>
-                        </Row>
-                        <Row>
-                            <Button IsOutline="true"
-                                    IsBlock="true"
-                                    Text="結帳"
-                                    Icon="cart-shopping"
-                                    OnClickWithoutRender="(()=>{ StateHasChanged(); return Task.CompletedTask;})" />
-                        </Row>
-                    </Row>
-                </FooterTemplate>
-            </Card>
+                                            Text="結帳"
+                                            Icon="cart-shopping"
+                                            OnClickWithoutRender="checkOut" />
+                                </Row>
+                            </Row>
+                        </FooterTemplate>
+                    </Card>
 
 
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </GroupBox>
+
+</Row>
+
+
+
+
+
+
+
+
 
 
 

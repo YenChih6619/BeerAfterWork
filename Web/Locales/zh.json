@@ -1,26 +1,373 @@
 ﻿{
-  "Web.Data.Foo": {
-    "Name": "姓名",
-    "DateTime": "日期",
-    "Address": "地址",
-    "Count": "数量",
-    "Complete": "是/否",
-    "Education": "学历",
-    "Hobby": "爱好",
-    "Name.Required": "{0}是必填项",
-    "Address.Required": "{0}是必填项",
-    "Education.Required": "{0}是必选项",
-    "Hobby.Required": "请选择一种{0}",
-    "Name.PlaceHolder": "不可为空",
-    "Hobbys": "游泳,登山,打球,下棋",
-    "Foo.Name": "张三 {0}",
-    "Foo.Address": "上海市普陀区金沙江路 {0} 弄",
-    "Foo.Address2": "地球、中国、上海市普陀区金沙江路 {0} 弄 这里是超长单元格示例",
-    "Foo.BindValue": "绑定值"
+  "BootstrapBlazor.Components.AutoComplete": {
+    "NoDataTip": "無匹配資料",
+    "PlaceHolder": "請輸入"
   },
-  "Web.Data.EnumEducation": {
-    "PlaceHolder": "请选择 ...",
-    "Primary": "小学",
-    "Middel": "中学"
+  "BootstrapBlazor.Components.Captcha": {
+    "HeaderText": "請完成安全驗證",
+    "BarText": "向右滑動填充拼圖",
+    "FailedText": "載入失敗",
+    "LoadText": "正在載入 ..."
+  },
+  "BootstrapBlazor.Components.Calendar": {
+    "PreviousYear": "上一年",
+    "PreviousMonth": "上一月",
+    "Today": "今天",
+    "NextMonth": "下一月",
+    "NextYear": "下一年",
+    "PreviousWeek": "上一周",
+    "WeekText": "本周",
+    "NextWeek": "下一周",
+    "WeekHeaderText": "周",
+    "WeekLists": "日,一,二,三,四,五,六",
+    "WeekNumberText": "第 {0} 周",
+    "Months": "1,2,3,4,5,6,7,8,9,10,11,12",
+    "Title": "{0} 年 {1} 月"
+  },
+  "BootstrapBlazor.Components.Cascader": {
+    "PlaceHolder": "請選擇 ..."
+  },
+  "BootstrapBlazor.Components.Console": {
+    "HeaderText": "系統監控",
+    "LightTitle": "通訊指示燈",
+    "ClearButtonText": "清屏",
+    "AutoScrollText": "自動滾屏"
+  },
+  "BootstrapBlazor.Components.DateTimePicker": {
+    "DatePlaceHolder": "選擇日期",
+    "TimePlaceHolder": "選擇時間",
+    "DateTimePlaceHolderText": "請選擇日期時間",
+    "DatePlaceHolderText": "請選擇日期",
+    "TimeFormat": "hh\\:mm\\:ss",
+    "DateFormat": "yyyy-MM-dd",
+    "DateTimeFormat": "yyyy-MM-dd HH\\:mm\\:ss",
+    "AiraPrevYearLabel": "前一年",
+    "AiraNextYearLabel": "後一年",
+    "AiraPrevMonthLabel": "上一月",
+    "AiraNextMonthLabel": "下一月",
+    "ClearButtonText": "清空",
+    "NowButtonText": "現在",
+    "ConfirmButtonText": "確定",
+    "CancelButtonText": "取消",
+    "YearText": "{0} 年",
+    "MonthText": "{0} 月",
+    "YearPeriodText": "{0} 年 - {1} 年",
+    "Months": "1,2,3,4,5,6,7,8,9,10,11,12",
+    "MonthLists": "一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月",
+    "WeekLists": "日,一,二,三,四,五,六",
+    "GenericTypeErroMessage": "DateTimePicker 組件僅支持綁定泛型為 DateTime DateTime? DateTimeOffset DateTimeOffset?",
+    "Today": "今天",
+    "Yesterday": "昨天",
+    "Week": "一周前"
+  },
+  "BootstrapBlazor.Components.DateTimeRange": {
+    "SeparateText": "至",
+    "StartPlaceHolderText": "開始日期",
+    "EndPlaceHolderText": "結束日期",
+    "ClearButtonText": "清空",
+    "TodayButtonText": "今天",
+    "ConfirmButtonText": "確定",
+    "DateTimeFormat": "yyyy-MM-dd HH\\:mm\\:ss",
+    "DateFormat": "yyyy-MM-dd",
+    "Last7Days": "最近 7 天",
+    "Last30Days": "最近 30 天",
+    "ThisMonth": "這個月",
+    "LastMonth": "上個月"
+  },
+  "BootstrapBlazor.Components.BootstrapInputNumber": {
+    "ParsingErrorMessage": "{0}字段值必須為 Number 類型"
+  },
+  "BootstrapBlazor.Components.ResultDialogOption": {
+    "ButtonYesText": "確認",
+    "ButtonNoText": "取消",
+    "ButtonCloseText": "關閉"
+  },
+  "BootstrapBlazor.Components.DropdownList": {
+    "PlaceHolder": "請選擇 ..."
+  },
+  "BootstrapBlazor.Components.Editor": {
+    "PlaceHolder": "點擊後編輯"
+  },
+  "BootstrapBlazor.Components.EditorForm": {
+    "ModelInvalidOperationExceptionMessage": "驗證表單與 {0} 綁定模型不一致",
+    "PlaceHolderText": "請輸入 ..."
+  },
+  "BootstrapBlazor.Components.ValidateForm": {
+    "ModelInvalidOperationExceptionMessage": "驗證表單與 {0} 綁定模型不一致",
+    "PlaceHolderText": "請輸入 ..."
+  },
+  "BootstrapBlazor.Components.Empty": {
+    "Text": "暫無描述"
+  },
+  "BootstrapBlazor.Components.EqualToValidator": {
+    "ErrorMessage": "妳的輸入不相同"
+  },
+  "BootstrapBlazor.Components.ErrorLogger": {
+    "ToastTitle": "應用程式錯誤"
+  },
+  "BootstrapBlazor.Components.GoTop": {
+    "TooltipText": "返回頂端"
+  },
+  "BootstrapBlazor.Components.Layout": {
+    "TooltipText": "點擊展開收縮左側菜單"
+  },
+  "BootstrapBlazor.Components.Logout": {
+    "PrefixDisplayNameText": "歡迎",
+    "PrefixUserNameText": "當前賬號:"
+  },
+  "BootstrapBlazor.Components.LogoutLink": {
+    "Text": "註銷"
+  },
+  "BootstrapBlazor.Components.Menu": {
+    "InvalidOperationExceptionMessage": "SideMenu 組件不可以獨立使用，請使用 Menu 組件設定 IsVertical=true"
+  },
+  "BootstrapBlazor.Components.ModalDialog": {
+    "CloseButtonText": "關閉",
+    "SaveButtonText": "保存",
+    "PrintButtonText": "列印",
+    "ExportPdfButtonText": "導出 Pdf"
+  },
+  "BootstrapBlazor.Components.MultiSelect": {
+    "PlaceHolder": "點擊進行多選 ...",
+    "SelectAllText": "全選",
+    "ReverseSelectText": "反選",
+    "ClearText": "清除",
+    "MinErrorMessage": "最少請選擇 {0} 項",
+    "MaxErrorMessage": "最多可以選擇 {0} 項"
+  },
+  "BootstrapBlazor.Components.Pagination": {
+    "GotoNavigatorLabelText": "跳轉到"
+  },
+  "BootstrapBlazor.Components.PopConfirmButton": {
+    "CloseButtonText": "取消",
+    "ConfirmButtonText": "確定",
+    "Content": "妳確定要執行此操作嗎？"
+  },
+  "BootstrapBlazor.Components.PrintButton": {
+    "Text": "列印"
+  },
+  "BootstrapBlazor.Components.Repeater": {
+    "EmptyText": "無資料"
+  },
+  "BootstrapBlazor.Components.Search": {
+    "SearchButtonText": "搜尋"
+  },
+  "BootstrapBlazor.Components.Select": {
+    "PlaceHolder": "請選擇 ...",
+    "NoSearchDataText": "無資料"
+  },
+  "BootstrapBlazor.Components.SelectTree": {
+    "PlaceHolder": "請選擇 ..."
+  },
+  "BootstrapBlazor.Components.StringLengthValidator": {
+    "ErrorMessage": "最多可以輸入 {{0}} 個文字"
+  },
+  "BootstrapBlazor.Components.SweetAlert": {
+    "CloseButtonText": "關閉",
+    "CancelButtonText": "取消",
+    "ConfirmButtonText": "確認"
+  },
+  "BootstrapBlazor.Components.Switch": {
+    "OnInnerText": "開",
+    "OffInnerText": "關"
+  },
+  "BootstrapBlazor.Components.Tab": {
+    "CloseCurrentTabText": "關閉當前標簽",
+    "CloseOtherTabsText": "關閉其他標簽",
+    "CloseAllTabsText": "關閉所有標簽",
+    "NotFoundTabText": "未找到"
+  },
+  "BootstrapBlazor.Components.Table": {
+    "AddButtonText": "新建",
+    "EditButtonText": "編輯",
+    "UpdateButtonText": "更新",
+    "DeleteButtonText": "刪除",
+    "CancelButtonText": "取消",
+    "SaveButtonText": "保存",
+    "CloseButtonText": "關閉",
+    "CancelDeleteButtonText": "取消",
+    "ConfirmDeleteButtonText": "刪除",
+    "ConfirmDeleteContentText": "確認要刪除選中的所有行嗎？",
+    "RefreshButtonText": "更新",
+    "CardViewButtonText": "視圖",
+    "ColumnButtonTitleText": "列顯示隱藏控制",
+    "ColumnButtonText": "列",
+    "ExportButtonText": "導出資料",
+    "SearchPlaceholderText": "搜尋",
+    "SearchButtonText": "搜尋",
+    "ResetSearchButtonText": "清空搜尋",
+    "AdvanceButtonText": "高級搜尋",
+    "AdvancedSortModalTitle": "自定義排序",
+    "AdvancedSortButtonText": "高級排序",
+    "CheckboxDisplayText": "選擇",
+    "EditModalTitle": "編輯視窗",
+    "AddModalTitle": "新建視窗",
+    "LineNoText": "行號",
+    "ColumnButtonTemplateHeaderText": "操作",
+    "SearchTooltip": "<div class='search-input-tooltip'>輸入任意文字串全局搜尋</br><kbd>Enter</kbd> 搜尋 <kbd>ESC</kbd> 清除搜尋</div>",
+    "SearchModalTitle": "搜尋條件",
+    "AddButtonToastTitle": "新建資料",
+    "AddButtonToastContent": "未提供新建資料方法，無法新建資料",
+    "EditButtonToastTitle": "編輯資料",
+    "EditButtonToastNotSelectContent": "請選擇要編輯的資料",
+    "EditButtonToastReadonlyContent": "選項不可編輯",
+    "EditButtonToastMoreSelectContent": "只能選擇一項要編輯的資料",
+    "EditButtonToastNoSaveMethodContent": "未提供保存資料方法，無法編輯資料",
+    "SaveButtonToastTitle": "保存資料",
+    "SaveButtonToastContent": "未提供保存資料方法，無法保存資料",
+    "SaveButtonToastResultContent": "保存資料{0}, {1} 秒後自動關閉",
+    "SuccessText": "成功",
+    "FailText": "失敗",
+    "DeleteButtonToastTitle": "刪除資料",
+    "DeleteButtonToastContent": "請選擇要刪除的資料, {0} 秒後自動關閉",
+    "DeleteButtonToastResultContent": "刪除資料{0}, {1} 秒後自動關閉",
+    "DeleteButtonToastCanNotDeleteContent": "選中資料中有不可刪除資料, {0} 秒後自動關閉",
+    "DataServiceInvalidOperationText": "未註冊 'BootstrapBlazor.Components.IDataService`1[{0}]' 服務",
+    "NotSetOnTreeExpandErrorMessage": "未設定 OnTreeExpand 回調委托方法",
+    "UnsetText": "點擊升序",
+    "SortAscText": "點擊降序",
+    "SortDescText": "取消排序",
+    "EmptyText": "無資料",
+    "ExportToastTitle": "導出資料",
+    "ExportToastContent": "導出資料 {0}，{1} 秒後自動關閉",
+    "ExportToastInProgressContent": "正在導出資料，請稍後, {0} 秒後自動關閉",
+    "ExportCsvDropdownItemText": "微軟 Csv 格式",
+    "ExportExcelDropdownItemText": "微軟 Excel 格式",
+    "ExportPdfDropdownItemText": "Pdf 格式",
+    "PageInfoText": "{0} - {1} 共 {2} 條",
+    "PageItemsText": "{0} 條/頁",
+    "CopyColumnTooltipText": "複製列內容到剪切板",
+    "CopyColumnCopiedTooltipText": "已複製"
+  },
+  "BootstrapBlazor.Components.EditDialog": {
+    "CloseButtonText": "關閉",
+    "SaveButtonText": "保存",
+    "PlaceHolder": "請輸入 ..."
+  },
+  "BootstrapBlazor.Components.BootstrapInput": {
+    "PlaceHolder": "請輸入 ..."
+  },
+  "BootstrapBlazor.Components.TableFilter": {
+    "ClearButtonText": "重置",
+    "FilterButtonText": "確認",
+    "BoolFilter.AllText": "全部",
+    "BoolFilter.TrueText": "選中",
+    "BoolFilter.FalseText": "未選中",
+    "GreaterThanOrEqual": "大於等於",
+    "LessThanOrEqual": "小於等於",
+    "GreaterThan": "大於",
+    "LessThan": "小於",
+    "Equal": "等於",
+    "NotEqual": "不等於",
+    "Contains": "包含",
+    "NotContains": "不包含",
+    "EnumFilter.AllText": "全選",
+    "NotSupportedMessage": "不支持的類型，請使用 FilterTemplate 自定義過濾組件"
+  },
+  "BootstrapBlazor.Components.FilterLogicItem": {
+    "And": "並且",
+    "Or": "或者"
+  },
+  "BootstrapBlazor.Components.SearchDialog": {
+    "ResetButtonText": "重置",
+    "QueryButtonText": "查詢"
+  },
+  "BootstrapBlazor.Components.SwitchButton": {
+    "OnText": "開",
+    "OffText": "關"
+  },
+  "BootstrapBlazor.Components.Timer": {
+    "PauseText": "暫停",
+    "ResumeText": "繼續",
+    "CancelText": "取消",
+    "StarText": "開始計時"
+  },
+  "BootstrapBlazor.Components.Toggle": {
+    "OnText": "展開",
+    "OffText": "收縮"
+  },
+  "BootstrapBlazor.Components.Transfer": {
+    "LeftPanelText": "全部",
+    "RightPanelText": "已選",
+    "MinErrorMessage": "最少請選擇 {0} 項",
+    "MaxErrorMessage": "最多可選擇 {0} 項"
+  },
+  "BootstrapBlazor.Components.TransferPanel": {
+    "SearchPlaceHolderString": "請輸入 ...",
+    "Text": "列表"
+  },
+  "BootstrapBlazor.Components.Tree": {
+    "NotSetOnTreeExpandErrorMessage": "未設定 OnExpandNodeAsync 回調委托方法"
+  },
+  "BootstrapBlazor.Components.TreeView": {
+    "NotSetOnTreeExpandErrorMessage": "未設定 OnExpandNodeAsync 回調委托方法"
+  },
+  "BootstrapBlazor.Components.UploadBase": {
+    "DeleteButtonText": "刪除",
+    "BrowserButtonText": "瀏覽",
+    "FileExtensions": "文件擴展名必須為以下幾種格式: {0}",
+    "FileSizeValidation": "文件太大，文件限制大小為 {0}"
+  },
+  "BootstrapBlazor.Components.Handwritten": {
+    "SaveButtonText": "保存",
+    "ClearButtonText": "清除"
+  },
+  "BootstrapBlazor.Components.SignaturePad": {
+    "SignAboveLabel": "在框內簽名",
+    "ClearBtnTitle": "清除",
+    "SignatureAlertText": "請先簽名",
+    "ChangeColorBtnTitle": "換顏色",
+    "UndoBtnTitle": "取消",
+    "CloseBtnTitle": "關閉",
+    "SaveBase64BtnTitle": "確定",
+    "SavePNGBtnTitle": "PNG",
+    "SaveJPGBtnTitle": "JPG",
+    "SaveSVGBtnTitle": "SVG"
+  },
+  "BootstrapBlazor.Components.NullableBoolItemsAttribute": {
+    "NullValueDisplayText": "請選擇 ...",
+    "TrueValueDisplayText": "True",
+    "FalseValueDisplayText": "False"
+  },
+  "BootstrapBlazor.Components.InsertRowMode": {
+    "Last": "最後",
+    "First": "最前"
+  },
+  "BootstrapBlazor.Components.IconDialog": {
+    "LabelText": "選擇圖示",
+    "LabelFullText": "完整文本",
+    "ButtonText": "點擊復制",
+    "DialogHeaderText": "請選擇圖示",
+    "CopiedTooltipText": "複製成功"
+  },
+  "BootstrapBlazor.Components.Splitting": {
+    "Text": "正在載入 ..."
+  },
+  "BootstrapBlazor.Components.QueryBuilder": {
+    "And": "並且",
+    "Or": "或者",
+    "GreaterThanOrEqual": "大於等於",
+    "LessThanOrEqual": "小於等於",
+    "GreaterThan": "大於",
+    "LessThan": "小於",
+    "Equal": "等於",
+    "NotEqual": "不等於",
+    "Contains": "包含",
+    "NotContains": "不包含",
+    "GroupText": "組合條件",
+    "ItemText": "單行條件"
+  },
+  "BootstrapBlazor.Components.TableAdvancedSortDialog": {
+    "AscText": "升序",
+    "DescText": "降序"
+  },
+  "BootstrapBlazor.Components.ClockPicker": {
+    "AMText": "上午",
+    "PMText": "下午"
+  },
+  "BootstrapBlazor.Components.ThemeProvider": {
+    "AutoModeText": "自動",
+    "DarkModeText": "暗黑",
+    "LightModeText": "明亮"
   }
 }

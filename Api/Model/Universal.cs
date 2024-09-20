@@ -130,6 +130,29 @@
             }
         }
 
+        public class Wms_Stock_Travel
+        {
+            public class inParams
+            {
+                public string Manufacturer_ID { get; set; }
+                public string Lot_Code { get; set; }
+                public DateTime StartDate { set; get; }
+                public DateTime EndDate { set; get; }
+            }
+
+            public class outParams
+            {
+                public string Manufacturer_ID { get; set; }
+                public string Lot_Name { get; set; }
+                public string Lot_Code { get; set; }
+                public decimal? QTY_NORMAL { get; set; }
+                public decimal? QTY_Price { get; set; }
+                public decimal? QTY_Cost { get; set; }
+                public string UNIT_ID { get; set; }
+                public string Date_Time { get; set; }
+            }
+        }
+
         public class sys_Product
         {
             public class inParams
@@ -200,7 +223,7 @@
                 public int seat_Count { get; set; }
 
                 /// <summary>
-                /// 指示餐桌是否為私人房間。若為私人房間則為 true，否則為 false。
+                /// 指示是否結帳。若為已結帳則為 true，否則為 false。
                 /// </summary>
                 public bool isPrivate_Room { get; set; }
 
@@ -214,6 +237,90 @@
                 /// </summary>
                 public string memo { get; set; }
             }      
+        }
+
+        public class sys_Cart
+        {
+            public class inParams
+            {
+                /// <summary>
+                /// 桌號
+                /// </summary>
+                public string table_Name { set; get; }
+            }
+
+            public class outParams
+            {
+
+                /// <summary>
+                /// 桌號
+                /// </summary>
+                public string table_Name { set; get; }
+
+                /// <summary>
+                /// 產品名稱
+                /// </summary>
+                public string Lot_Name { set; get; }
+
+                /// <summary>
+                /// 標籤編號
+                /// </summary>
+                public string Lot_Code { set; get; }
+
+                /// <summary>
+                /// 單位價格
+                /// </summary>
+                public decimal QTY_Price { set; get; }
+
+                /// <summary>
+                /// 消費數量
+                /// </summary>
+                public decimal Count { set; get; }
+
+                /// <summary>
+                /// 折扣數 <br></br>
+                /// 預設:100 <br></br>
+                /// 九折的話就是 90
+                /// </summary>
+                public int Discount { set; get; } = 100;
+
+                /// <summary>
+                /// 消費金額
+                /// </summary>
+                public decimal Amount
+                {
+                    get
+                    {
+                        if (this.Count == 0) { return 0; }
+                        if (this.Discount == 0) { return 0; }
+                        return QTY_Price * this.Count * (this.Discount / 100);
+                    }
+                }
+
+
+            }
+        }
+
+        public class sys_Cart_travel
+        {
+            public class inParams
+            {
+                public string table_Name { get; set; }
+                public string lot_Code { get; set; }
+                public DateTime StartDate { set; get; }
+                public DateTime EndDate { set; get; }
+            }
+
+            public class outParams
+            {
+                public string table_Name { get; set; }
+                public string lot_Name { get; set; }
+                public string lot_Code { get; set; }
+                public decimal? QTY_Price { get; set; }
+                public decimal? Count { get; set; }
+                public decimal? Discount { get; set; }
+                public string Date_Time { get; set; }
+            }
         }
     }
 }

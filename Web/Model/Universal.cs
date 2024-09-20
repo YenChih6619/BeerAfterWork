@@ -10,8 +10,8 @@ namespace Web.Model
 {
     public class Call : IDisposable
     {
-        string _url, _jsonData;
-        HttpMethod _methodType;
+        public string _url, _jsonData;
+        public HttpMethod _methodType;
         private bool disposedValue;
 
         public Call(string url, string jsonData, HttpMethod methodType)
@@ -140,6 +140,30 @@ namespace Web.Model
             }
         }
 
+        public class sys_Cart_travel
+        {
+            public class inParams
+            {
+                public string table_Name { get; set; }
+                public string lot_Name { get; set; }
+                public string lot_Code { get; set; }
+                public decimal? QTY_Price { get; set; }
+                public decimal? Count { get; set; }
+                public decimal? Discount { get; set; }
+            }
+
+            public class outParams
+            {
+                public string table_Name { get; set; }
+                public string lot_Name { get; set; }
+                public string lot_Code { get; set; }
+                public decimal? QTY_Price { get; set; }
+                public decimal? Count { get; set; }
+                public decimal? Discount { get; set; }
+                public string Date_Time { get; set; }
+            }
+        }
+
         public class sys_ProductList
         {
             public class inParams
@@ -187,6 +211,11 @@ namespace Web.Model
 
         public class sys_Unit
         {
+
+            /// <summary>
+            /// https://cfgate.trade.gov.tw/boft_pw/do/PW303_SC1Action?code=ALL&type=3 <br/>
+            /// 依照台灣輸出入電子貨品簽證
+            /// </summary>
             public class inParams
             {
 
@@ -333,20 +362,55 @@ namespace Web.Model
 
         public class Wms_Stock_Travel
         {
-            /// <summary>
-            /// 歷程
-            /// </summary>
-            /// <value>
-            /// Format: yyyyMMddHHmmssfff
-            /// </value>
-            public string Travel_id { set; get; }
+            public class inParams
+            {
+                /// <summary>
+                /// 製造商 ID
+                /// </summary>
+                public string Manufacturer_ID { set; get; }
 
-            /// <summary>
-            /// 製造商 ID
-            /// </summary>
-            public string Manufacturer_ID { set; get; }
+                /// <summary>
+                /// 產品名稱
+                /// </summary>
+                public string Lot_Name { set; get; }
 
+                /// <summary>
+                /// 標籤編號
+                /// </summary>
+                public string Lot_Code { set; get; }
 
+                /// <summary>
+                /// 庫存數量
+                /// </summary>
+                public decimal QTY_NORMAL { set; get; }
+
+                /// <summary>
+                /// 單位價格
+                /// </summary>
+                public decimal QTY_Price { set; get; }
+
+                /// <summary>
+                /// 單位成本
+                /// </summary>
+                public decimal QTY_Cost { set; get; }
+
+                /// <summary>
+                /// 單位 ID
+                /// </summary>
+                public int UNIT_ID { set; get; }
+            }
+
+            public class outParams
+            {
+                public string Manufacturer_ID { get; set; }
+                public string Lot_Name { get; set; }
+                public string Lot_Code { get; set; }
+                public decimal? QTY_NORMAL { get; set; }
+                public decimal? QTY_Price { get; set; }
+                public decimal? QTY_Cost { get; set; }
+                public string UNIT_ID { get; set; }
+                public string Date_Time { get; set; }
+            }
         }
 
         public class sys_Table
@@ -367,7 +431,7 @@ namespace Web.Model
                 public int seat_Count { get; set; }
 
                 /// <summary>
-                /// 指示餐桌是否為私人房間。若為私人房間則為 true，否則為 false。
+                /// 指示是否結帳。若為已結帳則為 true，否則為 false。
                 /// </summary>
                 [Display(Name = "是否結帳")]
                 public bool isPrivate_Room { get; set; } = true;
@@ -376,7 +440,7 @@ namespace Web.Model
                 /// 餐桌的狀態。
                 /// </summary>
                 [Display(Name = "餐桌狀態")]
-            
+
                 public int table_Status { get; set; } = 0;
 
                 /// <summary>

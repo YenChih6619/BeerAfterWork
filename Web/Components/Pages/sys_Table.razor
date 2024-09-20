@@ -6,21 +6,23 @@
        PageItemsSource="(new int[] {10,20,30,40})"
        IsStriped="true"
        IsBordered="true"
-       IsMultipleSelect="true"
+       IsMultipleSelect="false"
        ShowToolbar="true"
        ShowDefaultButtons="true"
        ShowSearch="false"
        ShowExtendButtons="false"
+       OnAddAsync="OnAddAsync"
+       OnSaveAsync="OnSaveAsync"
        OnQueryAsync="OnQueryAsync">
     <TableColumns>
         <TableColumn @bind-Field="@context.table_Name" />
-        <TableColumn @bind-Field="@context.isPrivate_Room" IsReadonlyWhenAdd="true" >
+        <TableColumn @bind-Field="@context.isPrivate_Room" IsReadonlyWhenAdd="true">
             <Template Context="v">
                 @{
-                    if (v.Row.isPrivate_Room)
+                    if (!v.Row.isPrivate_Room)
                     {
                         <div>
-                            <p style="background-color:rgb(190,0,0);color:white">
+                            <p style="background-color:rgb(190,0,0);color:white;margin-bottom:auto;">
                                 未結帳
                             </p>
                         </div>
@@ -28,7 +30,7 @@
                     else
                     {
                         <div>
-                            <p style="background-color:rgb(60, 179, 113);color:white">
+                            <p style="background-color:rgb(60, 179, 113);color:white;margin-bottom:auto;">
                                 已結帳
                             </p>
                         </div>

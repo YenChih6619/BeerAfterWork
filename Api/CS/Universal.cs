@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.SQLite;
 namespace Api.CS
 {
@@ -197,6 +198,17 @@ namespace Api.CS
                 return con.ExecuteAsync(ConStr, dynamic).Result;
         }
 
+        public int sys_Manufacturer_delete(Model.Universal.sys_Manufacturer.outParams outParams)
+        {
+            string ConStr = @"delete from sys_Manufacturer where Manufacturer_ID = :Manufacturer_ID";
+
+            DynamicParameters dynamic = new DynamicParameters();
+            dynamic.Add(":Manufacturer_ID", outParams.Manufacturer_ID);
+
+            using (var con = sqliteConnect())
+                return con.ExecuteAsync(ConStr, dynamic).Result;
+        }
+
         public IEnumerable<Model.Universal.sys_Table.outParams> sys_Table_Query(Model.Universal.sys_Table.inParams inParams)
         {
             string ConStr = @"SELECT
@@ -270,6 +282,205 @@ namespace Api.CS
             using (var con = sqliteConnect())
                 return con.ExecuteAsync(ConStr, dynamics).Result;
         }
+
+        public IEnumerable<Model.Universal.sys_Cart.outParams> sys_Cart_temp_Query(Model.Universal.sys_Cart.inParams inParams)
+        {
+            string ConStr = @"SELECT
+                              *
+                            FROM sys_Cart_temp
+                            WHERE table_Name = :table_Name";
+
+            DynamicParameters dynamic = new DynamicParameters();
+            dynamic.Add(":table_Name", inParams.table_Name);
+
+            using (var con = sqliteConnect())
+                return con.QueryAsync<Model.Universal.sys_Cart.outParams>(ConStr, dynamic).Result;
+        }
+
+        public int sys_Cart_temp_Insert(List<Model.Universal.sys_Cart.outParams> outParams)
+        {
+            string ConStr = @"INSERT INTO sys_Cart_temp (
+                            table_Name,
+                            lot_Name,
+                            lot_Code,
+                            QTY_Price,
+                            Count,
+                            Discount
+                        ) VALUES (
+                            @table_Name,
+                            @lot_Name,
+                            @lot_Code,
+                            @QTY_Price,
+                            @Count,
+                            @Discount
+                        )
+                        ON CONFLICT(table_Name, lot_Code) DO UPDATE SET
+                            lot_Name = excluded.lot_Name,
+                            QTY_Price = excluded.QTY_Price,
+                            Count = excluded.Count,
+                            Discount = excluded.Discount";
+
+            List<DynamicParameters> dynamics = new List<DynamicParameters>();
+            outParams.ForEach(outParam =>
+            {
+                DynamicParameters dynamic = new DynamicParameters();
+                dynamic.Add("@table_Name", outParam.table_Name);
+                dynamic.Add("@lot_Name", outParam.Lot_Name);
+                dynamic.Add("@lot_Code", outParam.Lot_Code);
+                dynamic.Add("@QTY_Price", outParam.QTY_Price);
+                dynamic.Add("@Count", outParam.Count);
+                dynamic.Add("@Discount", outParam.Discount);
+
+                dynamics.Add(dynamic);
+            });
+
+            using (var con = sqliteConnect())
+                return con.ExecuteAsync(ConStr, dynamics).Result;
+        }
+
+        public int sys_Cart_temp_delete(Model.Universal.sys_Cart.inParams inParams)
+        {
+            string ConStr = @"delete from sys_Cart_temp where table_Name = :table_Name";
+            DynamicParameters dynamic = new DynamicParameters();
+            dynamic.Add(":table_Name", inParams.table_Name);
+
+            using (var con = sqliteConnect())
+                return con.ExecuteAsync(ConStr, dynamic).Result;
+        }
+
+        public IEnumerable<Model.Universal.sys_Cart_travel.outParams> sys_Cart_travel_Query(Model.Universal.sys_Cart_travel.inParams inParams)
+        {
+            string ConStr = @"SELECT
+                              *
+                            FROM sys_Cart_travel
+                            WHERE (lot_Code = @lot_Code
+                            OR @lot_Code IS NULL
+                            OR @lot_Code = '')
+                            AND (table_Name = @table_Name
+                            OR @table_Name IS NULL
+                            OR @table_Name = '')
+                            AND Date_Time BETWEEN @StartDate AND @EndDate";
+
+            DynamicParameters dynamic = new DynamicParameters();
+            dynamic.Add("@lot_Code", inParams.lot_Code);
+            dynamic.Add("@table_Name", inParams.table_Name);
+            dynamic.Add("@StartDate", inParams.StartDate.ToString("yyyyMMddHHmmssfff"));
+            dynamic.Add("@EndDate", inParams.EndDate.ToString("yyyyMMddHHmmssfff"));
+
+            using (var con = sqliteConnect())
+                return con.QueryAsync<Model.Universal.sys_Cart_travel.outParams>(ConStr, dynamic).Result;
+        }
+
+        public int sys_Cart_travel_Insert(List<Model.Universal.sys_Cart.outParams> inParams)
+        {
+            var t = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+            string ConStr = @"INSERT INTO sys_Cart_travel (
+                            table_Name,
+                            lot_Name,
+                            lot_Code,
+                            QTY_Price,
+                            Count,
+                            Discount,
+                            Date_Time
+                        ) VALUES (
+                            @table_Name,
+                            @lot_Name,
+                            @lot_Code,
+                            @QTY_Price,
+                            @Count,
+                            @Discount,
+                            @Date_Time
+                        )";
+
+            List<DynamicParameters> dynamics = new List<DynamicParameters>();
+            inParams.ForEach(inParam =>
+            {
+                DynamicParameters dynamic = new DynamicParameters();
+                dynamic.Add("@table_Name", inParam.table_Name);
+                dynamic.Add("@lot_Name", inParam.Lot_Name);
+                dynamic.Add("@lot_Code", inParam.Lot_Code);
+                dynamic.Add("@QTY_Price", inParam.QTY_Price);
+                dynamic.Add("@Count", inParam.Count);
+                dynamic.Add("@Discount", inParam.Discount);
+                dynamic.Add("@Date_Time", t);
+
+                dynamics.Add(dynamic);
+            });
+
+            using (var con = sqliteConnect())
+                return con.ExecuteAsync(ConStr, dynamics).Result;
+        }
+
+        public IEnumerable<Model.Universal.Wms_Stock_Travel.outParams> Wms_Stock_Travel_Query(Model.Universal.Wms_Stock_Travel.inParams inParams)
+        {
+            string ConStr = @"SELECT
+                              *
+                            FROM wms_Stock_travel
+                            WHERE (Manufacturer_ID = @Manufacturer_ID
+                            OR @Manufacturer_ID IS NULL
+                            OR @Manufacturer_ID = '')
+                            AND (Lot_Code = @Lot_Code
+                            OR @Lot_Code IS NULL
+                            OR @Lot_Code = '')
+                            AND Date_Time BETWEEN @StartDate AND @EndDate";
+
+            DynamicParameters dynamic = new DynamicParameters();
+            dynamic.Add("@Manufacturer_ID", inParams.Manufacturer_ID);
+            dynamic.Add("@Lot_Code", inParams.Lot_Code);
+            dynamic.Add("@StartDate", inParams.StartDate);
+            dynamic.Add("@EndDate", inParams.EndDate);
+
+            using (var con = sqliteConnect())
+                return con.QueryAsync<Model.Universal.Wms_Stock_Travel.outParams>(ConStr, dynamic).Result;
+        }
+
+        public int Wms_Stock_Travel_Insert(List<Model.Universal.wms_Stock.outParams> inParams)
+        {
+            var t = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+            string ConStr = @"INSERT INTO wms_Stock_travel (
+                            Manufacturer_ID,
+                            Lot_Name,
+                            Lot_Code,
+                            QTY_NORMAL,
+                            QTY_Price,
+                            QTY_Cost,
+                            UNIT_ID,
+                            Date_Time
+                        ) VALUES (
+                            @Manufacturer_ID,
+                            @Lot_Name,
+                            @Lot_Code,
+                            @QTY_NORMAL,
+                            @QTY_Price,
+                            @QTY_Cost,
+                            @UNIT_ID,
+                            @Date_Time
+                        )";
+
+            List<DynamicParameters> dynamics = new List<DynamicParameters>();
+
+            inParams.ForEach(inParam =>
+            {
+                DynamicParameters dynamic = new DynamicParameters();
+                dynamic.Add("@Manufacturer_ID", inParam.Manufacturer_ID);
+                dynamic.Add("@Lot_Name", inParam.Lot_Name);
+                dynamic.Add("@Lot_Code", inParam.Lot_Code);
+                dynamic.Add("@QTY_NORMAL", inParam.QTY_NORMAL);
+                dynamic.Add("@QTY_Price", inParam.QTY_Price);
+                dynamic.Add("@QTY_Cost", inParam.QTY_Cost);
+                dynamic.Add("@UNIT_ID", inParam.UNIT_ID);
+                dynamic.Add("@Date_Time", t);
+
+                dynamics.Add(dynamic);
+            });
+
+            using (var con = sqliteConnect())
+                return con.ExecuteAsync(ConStr, dynamics).Result;
+        }
+
+    
 
         private bool disposedValue;
 
