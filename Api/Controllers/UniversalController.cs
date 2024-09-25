@@ -204,5 +204,15 @@ namespace Api.Controllers
                 return Content(JsonConvert.SerializeObject(Result, formatting: Formatting.Indented), "application/json");
             }
         }
+
+        [HttpPost("Universal/checkOut")]
+        public ActionResult checkOut([FromBody] Model.Universal.outCheck inParams)
+        {
+            using (CS.Universal Universal = new CS.Universal())
+            {
+                var Result = Universal.checkOut(inParams);
+                return Content(JsonConvert.SerializeObject(Result, formatting: Formatting.Indented), "application/json");
+            }
+        }
     }
 }

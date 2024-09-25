@@ -322,5 +322,12 @@
                 public string Date_Time { get; set; }
             }
         }
+
+        public class outCheck
+        {
+            public Model.Universal.sys_Table.outParams sys_Table { set; get; }
+
+            public List<Model.Universal.sys_Cart.outParams> sys_Cart { set; get; }
+        }
     }
 }

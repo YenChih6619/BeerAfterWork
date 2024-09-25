@@ -86,6 +86,7 @@ namespace Web.Model
     public static class Universal
     {
         public static string ExeUrl { get; set; } = @"http://localhost:5000/";
+        //public static string ExeUrl { get; set; } = @"http://localhost:8787/";
 
         public class sys_Cart
         {
@@ -450,6 +451,20 @@ namespace Web.Model
                 public string memo { get; set; }
             }
         }
+        public class outCheck
+        {
+            public outCheck(Model.Universal.sys_Table.outParams sys_Table, List<Model.Universal.sys_Cart.outParams> sys_Cart)
+            {
+                this.sys_Table = sys_Table;
+                this.sys_Cart = sys_Cart;
+            }
+
+
+            public Model.Universal.sys_Table.outParams sys_Table { set; get; }
+
+            public List<Model.Universal.sys_Cart.outParams> sys_Cart { set; get; }
+        }
+
     }
 
     public static class Extension

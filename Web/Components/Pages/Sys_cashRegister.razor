@@ -103,12 +103,41 @@
                                                 <p style="font-size:x-large"><strong>價格：</strong><span class="stock">@context.Qty_Price </span></p>
                                             </Row>
 
-                                            <Button IsOutline="true"
-                                                    IsBlock="true"
-                                                    Color="Color.Success"
-                                                    Size="Size.Medium"
-                                                    Text="確認"
-                                                    OnClickWithoutRender="@(()=>{ onConfirm(context); StateHasChanged(); return Task.CompletedTask; })" />
+                                            if (context != null)
+                                            {
+                                                if (context.Unit_No == "MLT")
+                                                {
+                                                    <Button IsOutline="true"
+                                                            IsBlock="true"
+                                                            Color="Color.Success"
+                                                            Size="Size.Medium"
+                                                            Text="大杯"
+                                                            OnClickWithoutRender="@(()=>{ context.Count = 700; onConfirm(context); StateHasChanged(); return Task.CompletedTask; })" />
+
+                                                    <Button IsOutline="true"
+                                                            IsBlock="true"
+                                                            Color="Color.Success"
+                                                            Size="Size.Medium"
+                                                            Text="中杯"
+                                                            OnClickWithoutRender="@(()=>{ context.Count = 500; onConfirm(context); StateHasChanged(); return Task.CompletedTask; })" />
+
+                                                    <Button IsOutline="true"
+                                                            IsBlock="true"
+                                                            Color="Color.Success"
+                                                            Size="Size.Medium"
+                                                            Text="小杯"
+                                                            OnClickWithoutRender="@(()=>{ context.Count = 300; onConfirm(context); StateHasChanged(); return Task.CompletedTask; })" />
+                                                }
+                                                else
+                                                {
+                                                    <Button IsOutline="true"
+                                                            IsBlock="true"
+                                                            Color="Color.Success"
+                                                            Size="Size.Medium"
+                                                            Text="確認"
+                                                            OnClickWithoutRender="@(()=>{ onConfirm(context); StateHasChanged(); return Task.CompletedTask; })" />
+                                                }
+                                            }
                                         }
 
                                     </Row>
@@ -119,7 +148,6 @@
                 </div>
                 <div class="right-panel">
                     <!-- 右側內容 -->
-
                     @{
                         if (sys_Table.isPrivate_Room)
                         {
@@ -196,10 +224,19 @@
                                     <p><strong> 合計: @Consumption.Sum(x => x.Amount)</strong></p>
                                 </Row>
                                 <Row>
+
+                                    <Button IsOutline="true"
+                                            IsBlock="true"
+                                            Text="存檔"
+                                            Color="Color.Link"
+                                            Icon="cart-shopping"
+                                            OnClickWithoutRender="()=>{ onChange(); StateHasChanged(); return Task.CompletedTask; }" />
+
                                     <Button IsOutline="true"
                                             IsBlock="true"
                                             Text="結帳"
                                             Icon="cart-shopping"
+                                            Color="Color.Success"
                                             OnClickWithoutRender="checkOut" />
                                 </Row>
                             </Row>

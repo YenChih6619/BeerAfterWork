@@ -158,6 +158,15 @@ namespace Api.CS
                 dynamics.Add(dynamic);
             });
 
+            try
+            {
+                Wms_Stock_Travel_Insert(_outParams);
+            }
+            catch
+            {
+
+            }
+
             using (var con = sqliteConnect())
                 return con.ExecuteAsync(ConStr, dynamics).Result;
         }
@@ -480,7 +489,30 @@ namespace Api.CS
                 return con.ExecuteAsync(ConStr, dynamics).Result;
         }
 
-    
+        public int checkOut(Model.Universal.outCheck outParams)
+        {
+            int res = 0;
+            foreach (var item in outParams.sys_Cart)
+            {
+                var stocks = wms_Stock_Query(new Model.Universal.wms_Stock.inParams() { Lot_Code = item.Lot_Code });
+
+                foreach (var stock in stocks)
+                {
+                    stock.QTY_NORMAL = stock.QTY_NORMAL - item.Count;
+                    res += wms_Stock_Insert(new List<Model.Universal.wms_Stock.outParams>() { stock });
+                }
+
+                item.table_Name = outParams.sys_Table.table_Name;
+
+                sys_Cart_travel_Insert(new List<Model.Universal.sys_Cart.outParams>() { item });
+            }
+
+            sys_Cart_temp_delete(new Model.Universal.sys_Cart.inParams() { table_Name = outParams.sys_Table.table_Name });
+            outParams.sys_Table.isPrivate_Room = true;
+            sys_Table_Insert(new List<Model.Universal.sys_Table.outParams>() { outParams.sys_Table });
+
+            return res;
+        }
 
         private bool disposedValue;
 

@@ -252,7 +252,91 @@ namespace Web.Components.Pages
 
         private async Task checkOut()
         {
-            
+            var raw = new Model.Universal.outCheck(sys_Table, Consumption);
+            using (Call call = new Call(
+                Model.Universal.ExeUrl + "Universal/checkOut",
+                raw.toJson(),
+                HttpMethod.Post
+                ))
+            {
+                var res = call.CallAPI();
+            }
+
+            using (Call callapi = new Call(
+               Model.Universal.ExeUrl + "Universal/sys_Manufacturer_Query",
+               new Dictionary<string, object>().toJson(),
+               HttpMethod.Post))
+            {
+                sys_Manufacturer = callapi.CallAPI().fromJson<List<Model.Universal.sys_Manufacturer.outParams>>();
+                sys_Manufacturer.Insert(0, new Universal.sys_Manufacturer.outParams()
+                {
+                    Manufacturer_ID = string.Empty,
+                    Manufacturer_Name = "全選"
+                });
+            };
+
+            using (Call callapi = new Call(
+                Model.Universal.ExeUrl + "Universal/sys_unit_Query",
+                new Dictionary<string, object>().toJson(),
+                HttpMethod.Post))
+            {
+                sys_Unit = callapi.CallAPI().fromJson<List<Model.Universal.sys_Unit.outParams>>();
+            };
+
+            using (Call call = new Call(
+                Model.Universal.ExeUrl + "Universal/wms_Stock_Query",
+                new { }.toJson(),
+                HttpMethod.Post))
+            {
+                outParams = call.CallAPI()
+                .fromJson<List<Model.Universal.Wms_Stock.outParams>>()
+                .Select(x =>
+                {
+                    string manu = string.Empty;
+                    string org = string.Empty;
+                    string unit = string.Empty;
+
+                    var _manu = sys_Manufacturer.Where(v => v.Manufacturer_ID == x.Manufacturer_ID);
+                    if (_manu != null)
+                    {
+                        manu = _manu.FirstOrDefault().Manufacturer_Name;
+                        org = _manu.FirstOrDefault().Manufacturer_Origin;
+                    }
+
+                    var _unit = sys_Unit.Where(v => v.UNIT_ID == x.UNIT_ID);
+                    if (_unit != null)
+                    {
+                        unit = _unit.FirstOrDefault().UNIT_NO;
+                    }
+
+                    return new Universal.sys_ProductList.outParams()
+                    {
+                        Count = 0,
+                        lot_Code = x.Lot_Code,
+                        lot_Name = x.Lot_Name,
+                        manufacturer_Name = manu,
+                        manufacturer_Origin = org,
+                        Qty_Noraml = x.QTY_NORMAL,
+                        Qty_Price = x.QTY_Price,
+                        Unit_No = unit
+                    };
+
+                }).ToList();
+            };
+
+            using (Call call = new(
+                Model.Universal.ExeUrl + "Universal/sys_Table_Query",
+                new { }.toJson(),
+                HttpMethod.Post
+               ))
+            {
+                sys_Table_Query = call.CallAPI().fromJson<List<Model.Universal.sys_Table.outParams>>();
+            }
+
+            sys_Table = new Universal.sys_Table.outParams();
+            Consumption = new List<Universal.sys_Cart.outParams>();
+
+            StateHasChanged();
         }
     }
 }
