@@ -62,6 +62,45 @@ namespace Web.Components.Pages
 
         private Task onClose(Model.Universal.Wms_Stock.outParams item, bool saved)
         {
+            using (Call call = new Call(
+                Model.Universal.ExeUrl + "Universal/wms_Stock_Insert",
+                new List<Model.Universal.Wms_Stock.outParams>() { item }.toJson(),
+                HttpMethod.Post
+                ))
+            {
+                var res = call.CallAPI();
+                var intbool = int.TryParse(res, out int intres);
+
+                SwalService.ShowModal(new SwalOption()
+                {
+                    Category = SwalCategory.Information,
+                    Content = intbool ? $"本次異動資料 {intres} 筆" : res,
+                    Title = "入庫結果",
+                    IsConfirm = false,
+                    ShowClose = true,
+                    ConfirmButtonText = "確定",
+                    CancelButtonText = "取消"
+                });
+
+                using var callApi = new Model.Call(
+                Model.Universal.ExeUrl + "Universal/wms_Stock_Query_Page",
+                    new
+                    {
+                        pageNumber = 1,
+                        Manufacturer_ID = init.Manufacturer_ID,
+                        Lot_Code = init.Lot_Code,
+                        Lot_Name = init.Lot_Name
+                    }.toJson(),
+                HttpMethod.Post);
+
+                Travel_Count();
+
+                outParams = callApi.CallAPI().fromJson<List<Model.Universal.Wms_Stock.outParams>>();
+            }
+
+            StateHasChanged();
+            return Task.CompletedTask;
+
 
             return Task.CompletedTask;
         }

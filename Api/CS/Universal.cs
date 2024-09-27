@@ -437,8 +437,8 @@ namespace Api.CS
             DynamicParameters dynamic = new DynamicParameters();
             dynamic.Add("@Manufacturer_ID", inParams.Manufacturer_ID);
             dynamic.Add("@Lot_Code", inParams.Lot_Code);
-            dynamic.Add("@StartDate", inParams.StartDate);
-            dynamic.Add("@EndDate", inParams.EndDate);
+            dynamic.Add("@StartDate", inParams.StartDate.ToString("yyyyMMddHHmmssfff"));
+            dynamic.Add("@EndDate", inParams.EndDate.ToString("yyyyMMddHHmmssfff"));
 
             using (var con = sqliteConnect())
                 return con.QueryAsync<Model.Universal.Wms_Stock_Travel.outParams>(ConStr, dynamic).Result;
